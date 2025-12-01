@@ -14,14 +14,14 @@ services:
     # Pas de depends_on backend pour l'instant
 
 # Backend commenté tant que tu n'en as pas besoin
-#  backend:
-#    build:
-#      context: ./backend
-#      dockerfile: Dockerfile.dev
-#    ports:
-#      - "3000:3000"
-#    environment:
-#      - NODE_ENV=development
-#    volumes:
-#      - ./backend/src:/app/src
-#      - /app/node_modules
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend/src:/app/src
+      - /app/node_modules

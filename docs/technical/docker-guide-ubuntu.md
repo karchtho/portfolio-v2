@@ -100,7 +100,151 @@ docker run -p 8080:80 -v $(pwd):/app -e NODE_ENV=development mon-app
 
 ---
 
-## 3. Commandes utiles
+## 3. Commandes pour ce projet (Portfolio)
+
+### Convention de nommage des fichiers
+
+```
+frontend/
+  Dockerfile.dev    # Build de dev avec hot-reload
+  Dockerfile.prod   # Build optimisé pour production
+
+backend/
+  Dockerfile.dev
+  Dockerfile.prod
+
+docker-compose.dev.yml   # Orchestration dev
+docker-compose.prod.yml  # Orchestration production
+```
+
+### Workflow développement (quotidien)
+
+```bash
+# Construire les images (après modif des Dockerfiles)
+docker compose -f docker-compose.dev.yml build
+
+# Lancer l'environnement de dev
+docker compose -f docker-compose.dev.yml up
+
+# Lancer en arrière-plan
+docker compose -f docker-compose.dev.yml up -d
+
+# Voir les logs en temps réel
+docker compose -f docker-compose.dev.yml logs -f
+
+# Voir les logs d'un service spécifique
+docker compose -f docker-compose.dev.yml logs -f frontend
+docker compose -f docker-compose.dev.yml logs -f backend
+
+# Arrêter et supprimer les conteneurs
+docker compose -f docker-compose.dev.yml down
+```
+
+### Production (pré-déploiement)
+
+```bash
+# Build et test en local
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up
+```
+
+### Rebuild complet (si problème)
+
+```bash
+# Rebuild sans cache (force la reconstruction complète)
+docker compose -f docker-compose.dev.yml build --no-cache
+
+# Supprimer tout et reconstruire
+docker compose -f docker-compose.dev.yml down -v
+docker compose -f docker-compose.dev.yml up --build
+```
+
+---
+
+## 4. Setup du proxy Angular (Frontend ↔ Backend)
+
+### Pourquoi un proxy ?
+
+En développement, le frontend (`localhost:4200`) et le backend (`localhost:3000`) sont sur des ports différents. Le navigateur bloque les requêtes cross-origin par défaut (CORS).
+
+**Solution recommandée** : Configurer un proxy Angular qui redirige les appels API.
+
+### Configuration
+
+**1. Créer `frontend/proxy.conf.json` :**
+
+```json
+{
+  "/api": {
+    "target": "http://backend:3000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+```
+
+> **Note** : On utilise `http://backend:3000` car à l'intérieur du réseau Docker, les services se parlent par leur nom (défini dans docker-compose).
+
+**2. Modifier `frontend/angular.json` :**
+
+Ajouter l'option `proxyConfig` dans la section `serve` :
+
+```json
+"serve": {
+  "builder": "@angular/build:dev-server",
+  "options": {
+    "proxyConfig": "proxy.conf.json"
+  },
+  "configurations": {
+    // ...
+  }
+}
+```
+
+**3. Mettre à jour le Dockerfile.dev pour copier le proxy.conf.json :**
+
+```dockerfile
+# Copy Angular config files (needed for ng serve to work)
+COPY angular.json tsconfig.json tsconfig.app.json tsconfig.spec.json proxy.conf.json ./
+```
+
+**4. Rebuild et relancer :**
+
+```bash
+docker compose -f docker-compose.dev.yml build frontend
+docker compose -f docker-compose.dev.yml up
+```
+
+### Utilisation dans le code
+
+```typescript
+// ✅ Appel avec proxy (recommandé)
+this.http.get('/api/projects')  // Redirigé automatiquement vers http://backend:3000/api/projects
+
+// ❌ Appel direct (CORS error)
+this.http.get('http://localhost:3000/api/projects')
+```
+
+### Alternative : CORS sur le backend
+
+Si tu préfères gérer CORS côté backend au lieu d'un proxy :
+
+```typescript
+// backend/src/main.ts
+import cors from 'cors';
+
+app.use(cors({
+  origin: 'http://localhost:4200',
+  credentials: true
+}));
+```
+
+> **Note** : Le proxy est généralement préféré en dev car plus proche du setup de production.
+
+---
+
+## 5. Commandes utiles
 
 | Action | Commande |
 |--------|----------|
@@ -116,7 +260,7 @@ docker run -p 8080:80 -v $(pwd):/app -e NODE_ENV=development mon-app
 
 ---
 
-## 4. Résolution de problèmes courants
+## 6. Résolution de problèmes courants
 
 ### Erreur "permission denied" sur docker.sock
 

@@ -2,11 +2,15 @@ FROM node:24-alpine
 
 WORKDIR /app
 
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Le code source est monté via volume, pas copié
-# COPY . .  ← pas besoin en dev
+# Copy Angular config files (needed for ng serve to work)
+COPY angular.json tsconfig.json tsconfig.app.json tsconfig.spec.json ./
+
+# Source code is mounted via volume, not copied
+# This allows hot-reload to work properly
 
 EXPOSE 4200
 
