@@ -1,32 +1,20 @@
-version: '3.8'
-
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
-    networks:
-      - portfolio
-    restart: unless-stopped
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "4200:4200"
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - backend
-    networks:
-      - portfolio
-    restart: unless-stopped
-
-networks:
-  portfolio:
-    driver: bridge

@@ -7,19 +7,13 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-
 RUN npm run build
 
-# Production stage
-FROM node:24-alpine
+# Production stage - image légère
+FROM nginx:alpine
 
-WORKDIR /app
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Install a simple HTTP server to serve the built app
-RUN npm install -g http-server
+EXPOSE 80
 
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 4200
-
-CMD ["http-server", "dist", "-p", "4200"]
+CMD ["nginx", "-g", "daemon off;"]
