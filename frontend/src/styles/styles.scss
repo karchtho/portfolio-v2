@@ -1,0 +1,259 @@
+// =============================================================================
+// MAIN STYLES
+// =============================================================================
+// Entry point for all global styles
+// Import order matters - tokens first, then themes, then components
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// 1. FONTS - Font imports
+// ---------------------------------------------------------------------------
+@use 'fonts';
+
+// ---------------------------------------------------------------------------
+// 2. TOKENS - Base color definitions
+// ---------------------------------------------------------------------------
+@use 'tokens';
+
+// ---------------------------------------------------------------------------
+// 3. THEMES - Light and dark mode with relative colors
+// ---------------------------------------------------------------------------
+@use 'themes';
+
+// ---------------------------------------------------------------------------
+// 4. GLOBAL RESETS & BASE STYLES
+// ---------------------------------------------------------------------------
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  // Smooth color transitions between themes
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  // Base font size for rem calculations
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Smooth transitions for theme changes
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+// ---------------------------------------------------------------------------
+// 4. TYPOGRAPHY
+// ---------------------------------------------------------------------------
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+// ---------------------------------------------------------------------------
+// 5. LINKS
+// ---------------------------------------------------------------------------
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--link-visited);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 2px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 6. BUTTONS
+// ---------------------------------------------------------------------------
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    box-shadow: var(--focus-ring);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 7. FORM ELEMENTS
+// ---------------------------------------------------------------------------
+
+label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+input,
+textarea,
+select {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: inherit;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--border-interactive);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 8. CODE BLOCKS
+// ---------------------------------------------------------------------------
+
+code,
+pre {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  background-color: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.875em;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+
+  code {
+    border: none;
+    padding: 0;
+    background: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 9. SCROLLBAR STYLING (for webkit browsers)
+// ---------------------------------------------------------------------------
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 6px;
+
+  &:hover {
+    background: var(--text-tertiary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 10. UTILITY CLASSES
+// ---------------------------------------------------------------------------
+
+// Container
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+// Card component
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+// Text utilities
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+
+// Background utilities
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-surface { background-color: var(--surface); }
+
+// Border utilities
+.border { border: 1px solid var(--border-default); }
+.border-subtle { border: 1px solid var(--border-subtle); }
+.border-strong { border: 1px solid var(--border-strong); }
+
+// Shadow utilities
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
