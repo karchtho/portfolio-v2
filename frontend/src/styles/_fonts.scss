@@ -1,0 +1,34 @@
+// Poppins
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-v20-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-v20-latin-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  // Source Sans 3
+  @font-face {
+    font-family: 'Source Sans 3';
+    src: url('/fonts/source-sans-3-v15-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  // Fira Code
+  @font-face {
+    font-family: 'Fira Code';
+    src: url('/fonts/fira-code-v22-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
