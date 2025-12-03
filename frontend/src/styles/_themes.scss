@@ -1,0 +1,324 @@
+// =============================================================================
+// THEMES - Light and Dark mode using relative colors
+// =============================================================================
+// Uses CSS relative color syntax: oklch(from var(--color) L C H / A)
+// This allows creating variations while maintaining color relationships
+// =============================================================================
+
+// =============================================================================
+// LIGHT THEME (default)
+// =============================================================================
+
+:root,
+[data-theme='light'] {
+  // ---------------------------------------------------------------------------
+  // Brand Colors
+  // ---------------------------------------------------------------------------
+  
+  --primary: var(--color-primary-light);
+  --accent: var(--color-accent-light);
+  
+  // Primary variations using relative colors
+  --primary-hover: oklch(from var(--primary) calc(l - 0.05) c h);
+  --primary-active: oklch(from var(--primary) calc(l - 0.10) c h);
+  --primary-light: oklch(from var(--primary) calc(l + 0.10) calc(c * 0.8) h);
+  
+  // Primary with alpha (for overlays, shadows, etc.)
+  --primary-alpha-10: oklch(from var(--primary) l c h / 0.1);
+  --primary-alpha-20: oklch(from var(--primary) l c h / 0.2);
+  --primary-alpha-30: oklch(from var(--primary) l c h / 0.3);
+  --primary-alpha-50: oklch(from var(--primary) l c h / 0.5);
+  
+  // Accent variations
+  --accent-hover: oklch(from var(--accent) calc(l - 0.05) c h);
+  --accent-active: oklch(from var(--accent) calc(l - 0.10) c h);
+  --accent-light: oklch(from var(--accent) calc(l + 0.10) calc(c * 0.8) h);
+  
+  // ---------------------------------------------------------------------------
+  // Backgrounds
+  // ---------------------------------------------------------------------------
+  
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-neutral-100);
+  --bg-tertiary: var(--color-neutral-50);
+  
+  // ---------------------------------------------------------------------------
+  // Surfaces (cards, modals, etc.)
+  // ---------------------------------------------------------------------------
+  
+  --surface: var(--color-neutral-50);
+  --surface-hover: oklch(from var(--surface) calc(l - 0.02) c h);
+  --surface-active: oklch(from var(--surface) calc(l - 0.04) c h);
+  
+  // Surface with elevation (for dropdowns, tooltips)
+  --surface-elevated: var(--color-white);
+  
+  // ---------------------------------------------------------------------------
+  // Text Colors
+  // ---------------------------------------------------------------------------
+  
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-400);
+  --text-tertiary: oklch(from var(--text-secondary) calc(l + 0.10) c h);
+  --text-disabled: oklch(from var(--text-secondary) calc(l + 0.20) c h);
+  
+  // Text on colored backgrounds
+  --text-on-primary: var(--color-white);
+  --text-on-accent: var(--color-white);
+  
+  // Link colors
+  --link: var(--primary);
+  --link-hover: var(--primary-hover);
+  --link-visited: oklch(from var(--primary) l c calc(h + 30));
+  
+  // ---------------------------------------------------------------------------
+  // Borders
+  // ---------------------------------------------------------------------------
+  
+  --border-subtle: oklch(from var(--color-neutral-200) calc(l + 0.02) c h);
+  --border-default: var(--color-neutral-200);
+  --border-strong: oklch(from var(--color-neutral-200) calc(l - 0.10) c h);
+  --border-interactive: var(--primary-alpha-30);
+  
+  // ---------------------------------------------------------------------------
+  // Semantic Colors (success, warning, error, info)
+  // ---------------------------------------------------------------------------
+  
+  --success: oklch(0.65 0.20 145);
+  --success-light: oklch(from var(--success) calc(l + 0.15) calc(c * 0.6) h);
+  --success-alpha-10: oklch(from var(--success) l c h / 0.1);
+  
+  --warning: oklch(0.75 0.18 85);
+  --warning-light: oklch(from var(--warning) calc(l + 0.10) calc(c * 0.6) h);
+  --warning-alpha-10: oklch(from var(--warning) l c h / 0.1);
+  
+  --error: oklch(0.60 0.25 25);
+  --error-light: oklch(from var(--error) calc(l + 0.15) calc(c * 0.6) h);
+  --error-alpha-10: oklch(from var(--error) l c h / 0.1);
+  
+  --info: var(--primary);
+  --info-light: var(--primary-light);
+  --info-alpha-10: var(--primary-alpha-10);
+  
+  // ---------------------------------------------------------------------------
+  // Shadows
+  // ---------------------------------------------------------------------------
+  
+  --shadow-sm: 0 1px 2px 0 oklch(from var(--color-neutral-900) l c h / 0.05);
+  --shadow-md: 0 4px 6px -1px oklch(from var(--color-neutral-900) l c h / 0.1),
+               0 2px 4px -2px oklch(from var(--color-neutral-900) l c h / 0.1);
+  --shadow-lg: 0 10px 15px -3px oklch(from var(--color-neutral-900) l c h / 0.1),
+               0 4px 6px -4px oklch(from var(--color-neutral-900) l c h / 0.1);
+  --shadow-xl: 0 20px 25px -5px oklch(from var(--color-neutral-900) l c h / 0.1),
+               0 8px 10px -6px oklch(from var(--color-neutral-900) l c h / 0.1);
+  
+  // ---------------------------------------------------------------------------
+  // Focus Rings
+  // ---------------------------------------------------------------------------
+  
+  --focus-ring: 0 0 0 3px var(--primary-alpha-20);
+  --focus-ring-error: 0 0 0 3px var(--error-alpha-10);
+}
+
+// =============================================================================
+// DARK THEME
+// =============================================================================
+
+[data-theme='dark'] {
+  // ---------------------------------------------------------------------------
+  // Brand Colors
+  // ---------------------------------------------------------------------------
+  
+  --primary: var(--color-primary-dark);
+  --accent: var(--color-accent-dark);
+  
+  // Primary variations (slightly different calculations for dark mode)
+  --primary-hover: oklch(from var(--primary) calc(l + 0.05) c h);
+  --primary-active: oklch(from var(--primary) calc(l + 0.10) c h);
+  --primary-light: oklch(from var(--primary) calc(l + 0.15) calc(c * 0.8) h);
+  
+  // Primary with alpha
+  --primary-alpha-10: oklch(from var(--primary) l c h / 0.15);
+  --primary-alpha-20: oklch(from var(--primary) l c h / 0.25);
+  --primary-alpha-30: oklch(from var(--primary) l c h / 0.35);
+  --primary-alpha-50: oklch(from var(--primary) l c h / 0.5);
+  
+  // Accent variations
+  --accent-hover: oklch(from var(--accent) calc(l + 0.05) c h);
+  --accent-active: oklch(from var(--accent) calc(l + 0.10) c h);
+  --accent-light: oklch(from var(--accent) calc(l + 0.15) calc(c * 0.8) h);
+  
+  // ---------------------------------------------------------------------------
+  // Backgrounds
+  // ---------------------------------------------------------------------------
+  
+  --bg-primary: var(--color-neutral-925);
+  --bg-secondary: var(--color-neutral-950);
+  --bg-tertiary: var(--color-neutral-850);
+  
+  // ---------------------------------------------------------------------------
+  // Surfaces
+  // ---------------------------------------------------------------------------
+  
+  --surface: var(--color-neutral-850);
+  --surface-hover: oklch(from var(--surface) calc(l + 0.03) c h);
+  --surface-active: oklch(from var(--surface) calc(l + 0.06) c h);
+  
+  // Surface with elevation
+  --surface-elevated: oklch(from var(--surface) calc(l + 0.05) c h);
+  
+  // ---------------------------------------------------------------------------
+  // Text Colors
+  // ---------------------------------------------------------------------------
+  
+  --text-primary: var(--color-neutral-150);
+  --text-secondary: var(--color-neutral-550);
+  --text-tertiary: oklch(from var(--text-secondary) calc(l - 0.10) c h);
+  --text-disabled: oklch(from var(--text-secondary) calc(l - 0.20) c h);
+  
+  // Text on colored backgrounds
+  --text-on-primary: var(--color-white);
+  --text-on-accent: var(--color-white);
+  
+  // Link colors
+  --link: var(--primary);
+  --link-hover: var(--primary-hover);
+  --link-visited: oklch(from var(--primary) l c calc(h + 30));
+  
+  // ---------------------------------------------------------------------------
+  // Borders
+  // ---------------------------------------------------------------------------
+  
+  --border-subtle: oklch(from var(--color-neutral-750) calc(l - 0.05) c h);
+  --border-default: var(--color-neutral-750);
+  --border-strong: oklch(from var(--color-neutral-750) calc(l + 0.10) c h);
+  --border-interactive: var(--primary-alpha-30);
+  
+  // ---------------------------------------------------------------------------
+  // Semantic Colors
+  // ---------------------------------------------------------------------------
+  
+  --success: oklch(0.70 0.18 145);
+  --success-light: oklch(from var(--success) calc(l + 0.15) calc(c * 0.6) h);
+  --success-alpha-10: oklch(from var(--success) l c h / 0.15);
+  
+  --warning: oklch(0.80 0.16 85);
+  --warning-light: oklch(from var(--warning) calc(l + 0.10) calc(c * 0.6) h);
+  --warning-alpha-10: oklch(from var(--warning) l c h / 0.15);
+  
+  --error: oklch(0.65 0.22 25);
+  --error-light: oklch(from var(--error) calc(l + 0.15) calc(c * 0.6) h);
+  --error-alpha-10: oklch(from var(--error) l c h / 0.15);
+  
+  --info: var(--primary);
+  --info-light: var(--primary-light);
+  --info-alpha-10: var(--primary-alpha-10);
+  
+  // ---------------------------------------------------------------------------
+  // Shadows (more subtle in dark mode)
+  // ---------------------------------------------------------------------------
+  
+  --shadow-sm: 0 1px 2px 0 oklch(from var(--color-black) l c h / 0.3);
+  --shadow-md: 0 4px 6px -1px oklch(from var(--color-black) l c h / 0.4),
+               0 2px 4px -2px oklch(from var(--color-black) l c h / 0.3);
+  --shadow-lg: 0 10px 15px -3px oklch(from var(--color-black) l c h / 0.5),
+               0 4px 6px -4px oklch(from var(--color-black) l c h / 0.4);
+  --shadow-xl: 0 20px 25px -5px oklch(from var(--color-black) l c h / 0.6),
+               0 8px 10px -6px oklch(from var(--color-black) l c h / 0.5);
+  
+  // ---------------------------------------------------------------------------
+  // Focus Rings
+  // ---------------------------------------------------------------------------
+  
+  --focus-ring: 0 0 0 3px var(--primary-alpha-20);
+  --focus-ring-error: 0 0 0 3px var(--error-alpha-10);
+}
+
+// =============================================================================
+// COLOR SCHEME PREFERENCE
+// =============================================================================
+
+// Automatically respect user's system preference if no theme is explicitly set
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    // Brand Colors
+    --primary: var(--color-primary-dark);
+    --accent: var(--color-accent-dark);
+
+    // Primary variations
+    --primary-hover: oklch(from var(--primary) calc(l + 0.05) c h);
+    --primary-active: oklch(from var(--primary) calc(l + 0.10) c h);
+    --primary-light: oklch(from var(--primary) calc(l + 0.15) calc(c * 0.8) h);
+
+    // Primary with alpha
+    --primary-alpha-10: oklch(from var(--primary) l c h / 0.15);
+    --primary-alpha-20: oklch(from var(--primary) l c h / 0.25);
+    --primary-alpha-30: oklch(from var(--primary) l c h / 0.35);
+    --primary-alpha-50: oklch(from var(--primary) l c h / 0.5);
+
+    // Accent variations
+    --accent-hover: oklch(from var(--accent) calc(l + 0.05) c h);
+    --accent-active: oklch(from var(--accent) calc(l + 0.10) c h);
+    --accent-light: oklch(from var(--accent) calc(l + 0.15) calc(c * 0.8) h);
+
+    // Backgrounds
+    --bg-primary: var(--color-neutral-925);
+    --bg-secondary: var(--color-neutral-950);
+    --bg-tertiary: var(--color-neutral-850);
+
+    // Surfaces
+    --surface: var(--color-neutral-850);
+    --surface-hover: oklch(from var(--surface) calc(l + 0.03) c h);
+    --surface-active: oklch(from var(--surface) calc(l + 0.06) c h);
+    --surface-elevated: oklch(from var(--surface) calc(l + 0.05) c h);
+
+    // Text Colors
+    --text-primary: var(--color-neutral-150);
+    --text-secondary: var(--color-neutral-550);
+    --text-tertiary: oklch(from var(--text-secondary) calc(l - 0.10) c h);
+    --text-disabled: oklch(from var(--text-secondary) calc(l - 0.20) c h);
+    --text-on-primary: var(--color-white);
+    --text-on-accent: var(--color-white);
+
+    // Link colors
+    --link: var(--primary);
+    --link-hover: var(--primary-hover);
+    --link-visited: oklch(from var(--primary) l c calc(h + 30));
+
+    // Borders
+    --border-subtle: oklch(from var(--color-neutral-750) calc(l - 0.05) c h);
+    --border-default: var(--color-neutral-750);
+    --border-strong: oklch(from var(--color-neutral-750) calc(l + 0.10) c h);
+    --border-interactive: var(--primary-alpha-30);
+
+    // Semantic Colors
+    --success: oklch(0.70 0.18 145);
+    --success-light: oklch(from var(--success) calc(l + 0.15) calc(c * 0.6) h);
+    --success-alpha-10: oklch(from var(--success) l c h / 0.15);
+
+    --warning: oklch(0.80 0.16 85);
+    --warning-light: oklch(from var(--warning) calc(l + 0.10) calc(c * 0.6) h);
+    --warning-alpha-10: oklch(from var(--warning) l c h / 0.15);
+
+    --error: oklch(0.65 0.22 25);
+    --error-light: oklch(from var(--error) calc(l + 0.15) calc(c * 0.6) h);
+    --error-alpha-10: oklch(from var(--error) l c h / 0.15);
+
+    --info: var(--primary);
+    --info-light: var(--primary-light);
+    --info-alpha-10: var(--primary-alpha-10);
+
+    // Shadows
+    --shadow-sm: 0 1px 2px 0 oklch(from var(--color-black) l c h / 0.3);
+    --shadow-md: 0 4px 6px -1px oklch(from var(--color-black) l c h / 0.4),
+                 0 2px 4px -2px oklch(from var(--color-black) l c h / 0.3);
+    --shadow-lg: 0 10px 15px -3px oklch(from var(--color-black) l c h / 0.5),
+                 0 4px 6px -4px oklch(from var(--color-black) l c h / 0.4);
+    --shadow-xl: 0 20px 25px -5px oklch(from var(--color-black) l c h / 0.6),
+                 0 8px 10px -6px oklch(from var(--color-black) l c h / 0.5);
+
+    // Focus Rings
+    --focus-ring: 0 0 0 3px var(--primary-alpha-20);
+    --focus-ring-error: 0 0 0 3px var(--error-alpha-10);
+  }
+}
