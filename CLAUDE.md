@@ -111,12 +111,14 @@ portfolio/
 - [ ] Tests unitaires des repositories et controllers
 
 ### Phase 3 : Frontend Angular (EN COURS)
-- [ ] Comprendre les standalone components
+- [x] Comprendre les standalone components
+- [x] Composant Button réutilisable (variant system, SCSS modulaire)
+- [x] Composant ProjectCard (affichage des projets)
 - [ ] Routing avec lazy loading
 - [ ] Service HTTP pour appeler l'API
 - [ ] Signals pour la gestion d'état
-- [ ] Afficher la liste des projets
-- [ ] Page détail d'un projet
+- [ ] Afficher la liste des projets depuis l'API
+- [ ] Page détail d'un projet (avec carousel d'images)
 - [ ] Tests des composants avec Vitest
 
 ### Phase 4 : Intégration & Style
@@ -129,7 +131,7 @@ portfolio/
 - [ ] Authentification JWT (login, tokens, refresh)
 - [ ] Guards Angular pour routes protégées
 - [ ] Interface CRUD admin
-- [ ] Upload d'images (optionnel)
+- [ ] Upload d'images (Multer + stockage fichier local, voir section Images)
 
 ### Phase 6 : Déploiement OVH
 - [x] Docker Compose production optimisé — *docker-compose.prod.yml avec secrets*
@@ -241,16 +243,16 @@ Les échanges dans Claude Code peuvent rester en français.
 
 ## 🚀 Prochaine étape
 
-**Phase 3 — Frontend Angular : Afficher les projets**
+**Phase 3 — Frontend Angular : Connecter l'API et afficher les projets**
 
-L'API backend est fonctionnelle et l'environnement est production-ready ! Maintenant on passe au frontend :
+Composants de base créés (Button, ProjectCard) ! Prochaines étapes :
 
-1. **Service HTTP** pour appeler l'API
-2. **Composant ProjectCard** — afficher une carte de projet
-3. **Page Projects** — lister tous les projets depuis l'API
-4. **Styling & responsive** — SCSS mobile-first
+1. **Service HTTP** pour appeler l'API backend
+2. **Page Projects** — lister tous les projets depuis l'API
+3. **Routing** — lazy loading et navigation
+4. **Page détail** — afficher un projet avec carousel d'images
 
-Objectif : afficher les 3 projets depuis l'API dans des cartes visuellement attrayantes.
+Objectif : connecter le frontend à l'API et afficher dynamiquement les projets.
 
 ---
 
@@ -282,6 +284,43 @@ backend/
 - Setup & troubleshooting : [docs/SETUP.md](docs/SETUP.md)
 - Secrets management guide : [docs/technical/secrets-management-guide.md](docs/technical/secrets-management-guide.md)
 
+### Gestion des images (Décembre 2025)
+
+**Stratégie retenue : Stockage fichier local + chemin DB**
+
+**Architecture :**
+- Images uploadées → `backend/uploads/projects/`
+- DB stocke les chemins relatifs dans colonne JSON `images`
+- Une image `thumbnail` principale pour les cards
+- Galerie d'images pour le carousel sur page détail
+
+**Stack technique :**
+- **Multer** (middleware Express pour upload multipart/form-data)
+- Volume Docker `uploads-data` pour persistance
+- Route statique Express : `/uploads` → `backend/uploads/`
+- Limite : 5 MB par image, formats JPEG/PNG/WebP/GIF
+
+**Structure SQL :**
+```sql
+CREATE TABLE projects (
+  ...
+  thumbnail VARCHAR(500),        -- Image principale (cards)
+  images JSON DEFAULT NULL,      -- ["uploads/projects/img1.jpg", ...]
+  ...
+);
+```
+
+**Workflow prévu :**
+1. Admin drag & drop des images
+2. Upload via POST `/api/upload/projects` (retourne les chemins)
+3. Frontend récupère les chemins et les stocke en créant/éditant le projet
+4. Cards affichent `thumbnail`
+5. Page détail affiche carousel avec toutes les `images`
+
+**Alternatives considérées (non retenues pour v1) :**
+- Base64 en DB → gonfle la DB, mauvaises performances
+- Cloud S3/Cloudinary → coût, complexité, non nécessaire pour un portfolio
+
 ---
 
-*Dernière mise à jour : 3 Décembre 2025 — Phase 2 complétée + Environment refactoring*
+*Dernière mise à jour : 4 Décembre 2025 — Phase 3 en cours (Button + ProjectCard components créés)*

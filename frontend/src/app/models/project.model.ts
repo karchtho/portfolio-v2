@@ -3,7 +3,7 @@
  */
   export interface Project {
     id: number;
-    title: string;
+    name: string;
     description: string;
     tags: string[];
     github_url?: string;
@@ -17,7 +17,7 @@
    * DTO for creating a new project
    */
   export interface CreateProjectDto {
-    title: string;
+    name: string;
     description: string;
     tags: string[];
     github_url?: string;
@@ -29,7 +29,7 @@
    * DTO for updating a project
    */
   export interface UpdateProjectDto {
-    title?: string;
+    name?: string;
     description?: string;
     tags?: string[];
     github_url?: string;

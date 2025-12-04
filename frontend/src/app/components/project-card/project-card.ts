@@ -1,6 +1,8 @@
 import { Component, input } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 import { Project } from '../../models/project.model';
+import { Button } from '../button/button';
 
 /**
  * ProjectCard Component
@@ -9,7 +11,7 @@ import { Project } from '../../models/project.model';
  */
 @Component({
   selector: 'app-project-card',
-  imports: [],
+  imports: [Button, RouterLink],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss'
 })

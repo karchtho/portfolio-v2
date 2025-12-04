@@ -3,7 +3,7 @@ INSERT INTO projects (name, description, url, github_url, image_url, tags, statu
   'Portfolio Website',
   'A modern full-stack portfolio built with Angular and Express. Showcases projects and blog posts.',
   'https://thomasportfolio.com',
-  'https://github.com/thomas/portfolio',
+  'https://github.com/karchtho/portfolio-v2',
   'https://picsum.photos/800?random=1',
   JSON_ARRAY('Angular', 'Express', 'MySQL', 'Docker'),
   'active'
