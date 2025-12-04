@@ -110,20 +110,28 @@ portfolio/
 - [ ] Gestion d'erreurs centralisée
 - [ ] Tests unitaires des repositories et controllers
 
-### Phase 3 : Frontend Angular (EN COURS)
+### Phase 3 : Frontend Angular ✅
 - [x] Comprendre les standalone components
 - [x] Composant Button réutilisable (variant system, SCSS modulaire)
 - [x] Composant ProjectCard (affichage des projets)
-- [ ] Routing avec lazy loading
-- [ ] Service HTTP pour appeler l'API
-- [ ] Signals pour la gestion d'état
-- [ ] Afficher la liste des projets depuis l'API
+- [x] Routing avec lazy loading (Layout parent + children routes)
+- [x] Service HTTP pour appeler l'API (ProjectsService avec HttpClient)
+- [x] Signals pour la gestion d'état (projects, loading, error signals)
+- [x] Afficher la liste des projets depuis l'API (Projects page opérationnelle)
+- [x] Theme Service (light/dark/auto avec localStorage)
+- [ ] Page Home (hero + featured projects)
 - [ ] Page détail d'un projet (avec carousel d'images)
 - [ ] Tests des composants avec Vitest
 
+### Phase 3.5 : Layout & Navigation (EN COURS)
+- [x] Composant Layout (wrapper avec navbar + router-outlet + footer)
+- [ ] Navbar component (navigation + theme toggle + responsive menu)
+- [ ] Footer component (copyright + social links)
+- [ ] Page Home (hero section + featured projects + CTA)
+
 ### Phase 4 : Intégration & Style
-- [x] Connexion front ↔ back (environnements, proxy dev) — *Configuration en place*
-- [ ] Architecture SCSS (variables, mixins, structure)
+- [x] Connexion front ↔ back (environnements, proxy dev)
+- [x] Architecture SCSS (tokens OKLCH, themes, utilities) — *Système complet implémenté*
 - [ ] Design responsive mobile-first
 - [ ] Animations de base
 
@@ -243,16 +251,23 @@ Les échanges dans Claude Code peuvent rester en français.
 
 ## 🚀 Prochaine étape
 
-**Phase 3 — Frontend Angular : Connecter l'API et afficher les projets**
+**Phase 3.5 — Layout & Navigation : Navbar + Footer + Home**
 
-Composants de base créés (Button, ProjectCard) ! Prochaines étapes :
+Layout component créé avec routing parent/children ! Prochaines étapes :
 
-1. **Service HTTP** pour appeler l'API backend
-2. **Page Projects** — lister tous les projets depuis l'API
-3. **Routing** — lazy loading et navigation
-4. **Page détail** — afficher un projet avec carousel d'images
+1. **Navbar component** — navigation links + theme toggle + mobile menu
+2. **Footer component** — copyright + social links
+3. **Page Home** — hero section + featured projects + CTA
+4. **Refactoring** — optimiser Projects page avec effects au lieu de OnInit
 
-Objectif : connecter le frontend à l'API et afficher dynamiquement les projets.
+**État actuel :**
+- ✅ Layout wrapper (navbar + router-outlet) en place
+- ✅ Routing restructuré avec lazy loading
+- ⏳ Navbar est un stub vide (à implémenter)
+- ❌ Footer n'existe pas encore
+- ❌ Page Home n'existe pas encore
+
+Objectif : compléter la structure de navigation et créer la page d'accueil.
 
 ---
 
@@ -323,4 +338,47 @@ CREATE TABLE projects (
 
 ---
 
-*Dernière mise à jour : 4 Décembre 2025 — Phase 3 en cours (Button + ProjectCard components créés)*
+## 📦 État actuel du projet (Décembre 2025)
+
+### Frontend (Angular 21)
+**Composants créés :**
+- ✅ **Button** — variant system (primary/secondary/ghost), sizes, routing/href support
+- ✅ **ProjectCard** — affichage projet avec thumbnail, description, tech badges, links
+- ✅ **Layout** — wrapper global avec navbar + router-outlet + footer placeholder
+- ⚠️ **Navbar** — stub vide (à implémenter)
+
+**Pages créées :**
+- ✅ **Projects** — liste tous les projets depuis l'API avec loading/error states
+- ❌ **Home** — à créer (hero + featured projects)
+- ❌ **Project Detail** — à créer (carousel d'images)
+
+**Services implémentés :**
+- ✅ **ProjectsService** — HTTP client + signal state (projects, loading, error)
+- ✅ **ThemeService** — light/dark/auto avec localStorage et system preference
+- ✅ **ConfigService** — runtime API URL injection (build once, deploy anywhere)
+
+**Styling :**
+- ✅ Système OKLCH complet (tokens + themes light/dark)
+- ✅ Fonts custom (Poppins, Source Sans 3, Fira Code)
+- ✅ Utilities CSS (container, card, shadows, etc.)
+
+**Routing :**
+- ✅ Layout parent avec children routes (lazy loading)
+- ✅ `/projects` opérationnel
+- ⚠️ `/home` configuré mais page non créée
+
+### Backend (Node.js + Express)
+- ✅ CRUD projects complet (GET /api/projects, GET /api/projects/:id)
+- ✅ MySQL avec mysql2 (connexions pool)
+- ✅ Migrations + seeds fonctionnels
+- ✅ Docker secrets support (production-ready)
+
+### Infrastructure
+- ✅ Docker Compose dev + prod
+- ✅ MySQL 8 avec persistance
+- ✅ Runtime config injection (frontend + backend)
+- ✅ Proxy dev configuré
+
+---
+
+*Dernière mise à jour : 4 Décembre 2025 — Phase 3.5 en cours (Layout créé, Navbar à implémenter)*
