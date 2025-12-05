@@ -129,7 +129,7 @@ portfolio/
 - [x] Composant Layout (wrapper avec navbar + router-outlet + footer)
 - [x] Navbar component (navigation + theme toggle iOS-style slider)
 - [x] Footer component (copyright + social links)
-- [x] **Code refactoring** : OnPush partout, `:host { display: block }`, breakpoints centralisés, prefers-reduced-motion
+- [x] **Code refactoring** : OnPush partout, breakpoints centralisés, prefers-reduced-motion
 - [x] Page Home (hero section + featured projects + Skills section + scroll anchors)
 - [ ] Mobile responsive menu (hamburger)
 

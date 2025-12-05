@@ -13,13 +13,13 @@ INSERT INTO projects (
   is_featured
 ) VALUES 
 (
-  'Portfolio Website',
-  'A modern full-stack portfolio built with Angular and Express. Showcases projects and blog posts.',
+  'Portfolio',
+  'A modern personal portfolio built with Angular and Node.js/Express, deployed on a secured OVH VPS with Docker and Nginx reverse proxy. This project marks my transition from PHP to a TypeScript-focused stack, with an emphasis on security-first infrastructure.',
   'https://karcherthomas.com',
   'https://github.com/karchtho/portfolio-v2',
-  NULL,  -- Add a real image path when you have one
+  'uploads/projects/portfolio-main.webp', 
   NULL,  -- Add JSON array when you have multiple images
-  JSON_ARRAY('Angular', 'Express', 'MySQL', 'Docker'),
+  JSON_ARRAY('Angular', 'Typescript', 'Node.js', 'Nginx', 'Express', 'MySQL', 'Docker'),
   'active',
   TRUE
 ),
