@@ -53,6 +53,23 @@ export class ProjectsController {
     }
   }
 
+  async getFeatured(_req: Request, res: Response): Promise<void> {
+    try {
+      const projects = await this.service.getFeaturedProjects();
+      res.json({
+        success: true,
+        data: projects,
+        message: 'Featured projects retrieved successfully',
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to retrieve featured projects';
+      res.status(500).json({
+        success: false,
+        error: message,
+      });
+    }
+  }
+
   async create(req: Request, res: Response): Promise<void> {
     try {
       const input: CreateProjectInput = req.body;

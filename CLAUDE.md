@@ -126,9 +126,10 @@ portfolio/
 ### Phase 3.5 : Layout & Navigation ✅
 - [x] Composant Layout (wrapper avec navbar + router-outlet + footer)
 - [x] Navbar component (navigation + theme toggle iOS-style slider)
+- [x] Footer component (copyright + social links)
+- [x] **Code refactoring** : OnPush partout, `:host { display: block }`, breakpoints centralisés, prefers-reduced-motion
 - [ ] Mobile responsive menu (hamburger)
-- [ ] Footer component (copyright + social links)
-- [ ] Page Home (hero section + featured projects + CTA)
+- [ ] Page Home (hero section + featured projects + CTA) — **PROCHAINE ÉTAPE**
 
 ### Phase 4 : Intégration & Style
 - [x] Connexion front ↔ back (environnements, proxy dev)
@@ -182,17 +183,29 @@ Les échanges dans Claude Code peuvent rester en français.
 - **Standalone components** uniquement (c'est le défaut maintenant)
 - **Signals** pour l'état réactif (signal, computed, effect)
 - **Zoneless** par défaut (pas de zone.js)
+- **ChangeDetectionStrategy.OnPush** obligatoire sur TOUS les composants
+- **`:host { display: block }`** pour pages et composants containers (évite les problèmes de layout inline)
 - Lazy loading systématique des routes
 - Services injectés via `inject()` plutôt que constructor DI
+- **PAS de `@HostListener` ou `@HostBinding`** → utiliser `host` property dans le decorator
 - Tests avec **Vitest** (intégré par défaut dans CLI v21)
 
 ### SCSS & Design System
-- **TOUJOURS utiliser les tokens de couleur** (`--primary`, `--text-secondary`, etc.) — jamais de couleurs hardcodées
+- **TOUJOURS utiliser les tokens de couleur** (`--primary`, `--text-secondary`, etc.) — jamais de couleurs hardcodées, jamais de `rgba()` hardcodé
+- **OKLCH pour toutes les couleurs** : utiliser `oklch(from var(--color) l c h / alpha)` pour les variations
+- **Utiliser les design tokens** :
+  - **Typography** : `var(--font-size-xs)` à `var(--font-size-5xl)`, `var(--font-weight-normal)` à `var(--font-weight-bold)`, `var(--line-height-tight/normal/relaxed)`
+  - **Spacing** : `var(--spacing-1)` (4px) à `var(--spacing-24)` (96px) pour padding/margin/gap
+  - **Transitions** : `var(--transition-fast/base/slow)` avec `var(--ease-in/out/in-out)`
+  - **Border radius** : `var(--radius-sm/default/md/lg/xl/full)`
+  - **Shadows** : `var(--shadow-xs/sm/md/lg/xl)`
+  - Tous définis dans `_design-tokens.scss`
 - **Respecter la charte graphique** : typographie (Poppins, Source Sans 3), tailles, weights
 - **Theme-aware** : les variables CSS changent automatiquement selon `data-theme` (light/dark)
-- Variables dans `_tokens.scss` et `_themes.scss`
-- Mixins réutilisables dans `_mixins.scss`
-- Approche BEM pour le nommage des classes
+- **Accessibilité** : `prefers-reduced-motion` obligatoire pour toutes les animations
+- **Utiliser les utility classes** : `.container`, `.card`, `.shadow-*`, etc. → éviter la duplication
+- **Breakpoints centralisés** : utiliser `$breakpoint-mobile`, `$breakpoint-tablet` depuis `_variables.scss`
+- **BEM strict avec SCSS nesting** : noms de classe BEM complets dans HTML (`navbar__brand`), mais utiliser `&__` dans SCSS pour profiter du nesting
 - Mobile-first (media queries min-width)
 - **Documentation** : voir `docs/technical/style-system/` pour les guidelines
 
@@ -256,25 +269,29 @@ Les échanges dans Claude Code peuvent rester en français.
 
 ## 🚀 Prochaine étape
 
-**Phase 3.5 — Layout & Navigation : Footer + Home**
+**Phase 3.5 — Layout & Navigation : Page Home** ✅ Terminé !
 
-Navbar complète avec theme switcher ! Prochaines étapes :
-
-1. **Footer component** — copyright + social links
-2. **Page Home** — hero section + featured projects + CTA
-3. **Mobile hamburger menu** — responsive navbar (optionnel pour v1)
-
-**État actuel (Décembre 4, 2025) :**
-- ✅ Layout wrapper (navbar + router-outlet + footer placeholder)
+**État actuel (Décembre 5, 2025) :**
+- ✅ Layout wrapper (navbar + router-outlet + footer)
 - ✅ Routing restructuré avec lazy loading (parent/children)
-- ✅ **Navbar complète** : logo, nav links (active state), theme slider iOS-style
-- ✅ Theme switcher fonctionnel (light/dark toggle)
-- ❌ Footer n'existe pas encore
-- ❌ Page Home n'existe pas encore
+- ✅ **Navbar complète** : logo, nav links (active state), theme slider iOS-style avec SVG icons + labels
+- ✅ **Footer complet** : copyright + social links (GitHub, LinkedIn, Email) avec SVG icons
+- ✅ **Design tokens system** : typography, spacing, transitions, border-radius, shadows (tous dans `_design-tokens.scss`)
+- ✅ **BEM + SCSS nesting** : architecture propre avec `&__` partout
+- ✅ **Code refactoring** : OnPush, `:host { display: block }`, breakpoints centralisés, prefers-reduced-motion
+- ✅ **Page Home** : hero section + featured projects + Skills section + scroll anchors
+- ✅ **SkeletonCard component** : loading state avec spinner et shimmer effect
+- ✅ **SkillBadge component** : badges code-styled pour compétences techniques
 
-**Documentation navbar :** voir `docs/technical/style-system/navbar-implementation.md`
+**Prochaines étapes :**
+1. **Architecture images backend** — upload, stockage, serving (Multer + volume Docker)
+2. **Seeds avec vraies images** — peupler les projets avec des images réelles
+3. **Contact form** — formulaire + backend endpoint
+4. **Mobile hamburger menu** — responsive navbar (optionnel pour v1)
 
-Objectif : compléter Footer et créer la page d'accueil Home.
+**Documentation :**
+- Navbar : `docs/technical/style-system/navbar-implementation.md`
+- Design tokens : voir `_design-tokens.scss` pour la liste complète
 
 ---
 
@@ -349,37 +366,47 @@ CREATE TABLE projects (
 
 ### Frontend (Angular 21)
 **Composants créés :**
-- ✅ **Button** — variant system (primary/secondary/ghost), sizes, routing/href support
-- ✅ **ProjectCard** — affichage projet avec thumbnail, description, tech badges, links
-- ✅ **Layout** — wrapper global avec navbar + router-outlet + footer placeholder
-- ✅ **Navbar** — navigation links avec active state + theme slider iOS-style
+- ✅ **Button** — variant system (primary/secondary/ghost), sizes, routing/href support, tokens corrigés
+- ✅ **ProjectCard** — affichage projet avec thumbnail, description, tech badges, links, BEM strict
+- ✅ **SkeletonCard** — loading state avec spinner SVG et shimmer effect
+- ✅ **SkillBadge** — badges code-styled (monospace, hover effects)
+- ✅ **Layout** — wrapper global avec navbar + router-outlet + footer
+- ✅ **Navbar** — navigation links avec active state + theme slider iOS-style + glassmorphism au scroll
+- ✅ **Footer** — copyright + social links (GitHub, LinkedIn, Email)
 
 **Pages créées :**
-- ✅ **Projects** — liste tous les projets depuis l'API avec loading/error states
-- ❌ **Home** — à créer (hero + featured projects)
+- ✅ **Home** — hero section + featured projects (avec loading states) + Skills section
+- ✅ **Projects** — liste tous les projets depuis l'API avec loading/error states, utilise `.container` utility
 - ❌ **Project Detail** — à créer (carousel d'images)
 
 **Services implémentés :**
-- ✅ **ProjectsService** — HTTP client + signal state (projects, loading, error)
+- ✅ **ProjectsService** — HTTP client + signal state (projects, featuredProjects, loading, error)
 - ✅ **ThemeService** — light/dark/auto avec localStorage et system preference
 - ✅ **ConfigService** — runtime API URL injection (build once, deploy anywhere)
 
-**Styling :**
+**Styling & Architecture :**
 - ✅ Système OKLCH complet (tokens + themes light/dark)
+- ✅ **Design tokens system** : typography, spacing, transitions, radius, shadows dans `_design-tokens.scss`
 - ✅ Fonts custom (Poppins, Source Sans 3, Fira Code)
 - ✅ Utilities CSS (container, card, shadows, etc.)
+- ✅ **Breakpoints centralisés** dans `_variables.scss` (`$breakpoint-mobile`, `$breakpoint-tablet`)
+- ✅ **BEM + SCSS nesting** : `&__` pour éviter répétition, noms complets dans HTML
+- ✅ **prefers-reduced-motion** implémenté globalement + navbar
+- ✅ **OnPush partout** (9 composants)
+- ✅ **`:host { display: block }`** sur pages et containers
 
 **Routing :**
 - ✅ Layout parent avec children routes (lazy loading)
-- ✅ `/home` — route configurée (page à créer)
+- ✅ `/` — Home page (hero + featured projects + skills)
 - ✅ `/projects` — page opérationnelle
 - ✅ `/about` — route configurée (page placeholder)
 
 ### Backend (Node.js + Express)
-- ✅ CRUD projects complet (GET /api/projects, GET /api/projects/:id)
+- ✅ CRUD projects complet (GET /api/projects, GET /api/projects/:id, GET /api/projects/featured)
 - ✅ MySQL avec mysql2 (connexions pool)
 - ✅ Migrations + seeds fonctionnels
 - ✅ Docker secrets support (production-ready)
+- ❌ Architecture upload images (Multer + volume Docker) — **PROCHAINE ÉTAPE**
 
 ### Infrastructure
 - ✅ Docker Compose dev + prod
@@ -446,4 +473,4 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
 
-*Dernière mise à jour : 4 Décembre 2025 — Phase 3.5 en cours (Navbar ✅, Footer et Home à faire)*
+*Dernière mise à jour : 5 Décembre 2025 — Phase 3.5 terminée (Home page ✅, Skills section ✅) — Phase 4 en cours (architecture images)*

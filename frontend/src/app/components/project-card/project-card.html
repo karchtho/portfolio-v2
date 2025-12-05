@@ -14,26 +14,17 @@
       <span class="tech-badge">{{ tag }}</span>
       }
     </div>
-
     <div class="project-card__links">
-      @if (project().github_url) {
+      @if (project().url) {
+      <app-button label="Live-demo" [href]="project().url" [external]="true" variant="primary" />
+      } @if (project().github_url) {
       <app-button
         label="GitHub"
-        [href]='project().github_url'
+        [href]="project().github_url"
         [external]="true"
         variant="secondary"
-      />
-      }
-
-      @if (project().demo_url) {
-      <app-button
-        label="Live-demo"
-        [href]="project().demo_url"
-        [external]="true"
-        variant="primary"
       />
       }
     </div>
   </div>
 </article>
-`

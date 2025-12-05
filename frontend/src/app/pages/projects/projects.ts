@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 
 import { ProjectCardComponent } from '../../components/project-card/project-card';
 import { ProjectsService } from '../../services/projects.service';
@@ -8,6 +8,7 @@ import { ProjectsService } from '../../services/projects.service';
   imports: [ProjectCardComponent],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Projects implements OnInit {
   protected readonly projectsService = inject(ProjectsService);

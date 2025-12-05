@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { Project } from '../../models/project.model';
 import { Button } from '../button/button';
@@ -12,7 +12,8 @@ import { Button } from '../button/button';
   selector: 'app-project-card',
   imports: [Button],
   templateUrl: './project-card.html',
-  styleUrl: './project-card.scss'
+  styleUrl: './project-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectCardComponent {
   /**

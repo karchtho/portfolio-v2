@@ -6,9 +6,11 @@
     name: string;
     description: string;
     tags: string[];
+    url?: string;
     github_url?: string;
-    demo_url?: string;
     image_url?: string;
+    status: 'active' | 'archived';
+    is_featured: boolean;
     created_at: string;
     updated_at: string;
   }
@@ -20,9 +22,11 @@
     name: string;
     description: string;
     tags: string[];
+    url?: string;
     github_url?: string;
-    demo_url?: string;
     image_url?: string;
+    status?: 'active' | 'archived';
+    is_featured?: boolean;
   }
 
   /**
@@ -32,7 +36,9 @@
     name?: string;
     description?: string;
     tags?: string[];
+    url?: string;
     github_url?: string;
-    demo_url?: string;
     image_url?: string;
+    status?: 'active' | 'archived';
+    is_featured?: boolean;
   }

@@ -1,3 +1,5 @@
+// TODO: Refacto _files.scss to avoid duplicates
+// TODO: Refacto navbar, footer, projects to use proper variables
 // =============================================================================
 // MAIN STYLES
 // =============================================================================
@@ -6,17 +8,27 @@
 // =============================================================================
 
 // ---------------------------------------------------------------------------
-// 1. FONTS - Font imports
+// 1. VARIABLES - SCSS compile-time variables (breakpoints, z-index)
+// ---------------------------------------------------------------------------
+@use 'variables' as *;
+
+// ---------------------------------------------------------------------------
+// 2. FONTS - Font imports
 // ---------------------------------------------------------------------------
 @use 'fonts';
 
 // ---------------------------------------------------------------------------
-// 2. TOKENS - Base color definitions
+// 3. TOKENS - Base color definitions
 // ---------------------------------------------------------------------------
 @use 'tokens';
 
 // ---------------------------------------------------------------------------
-// 3. THEMES - Light and dark mode with relative colors
+// 4. DESIGN TOKENS - Typography, spacing, shadows, etc.
+// ---------------------------------------------------------------------------
+@use 'design-tokens';
+
+// ---------------------------------------------------------------------------
+// 5. THEMES - Light and dark mode with relative colors
 // ---------------------------------------------------------------------------
 @use 'themes';
 
@@ -36,6 +48,25 @@ html {
 
   // Base font size for rem calculations
   font-size: 16px;
+
+  // Smooth scroll by default
+  scroll-behavior: smooth;
+}
+
+// Respect user motion preferences (accessibility)
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 body {
@@ -54,23 +85,47 @@ body {
 // 4. TYPOGRAPHY
 // ---------------------------------------------------------------------------
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-primary);
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   line-height: 1.3;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.5rem; }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1rem; }
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-6);
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-4);
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
 
 p {
-  margin-bottom: 1rem;
-  color: var(--text-primary);
+  margin-bottom: var(--spacing-4);
+  color: var(--text-secondary);
 }
 
 // ---------------------------------------------------------------------------
@@ -84,7 +139,6 @@ a {
 
   &:hover {
     color: var(--link-hover);
-    text-decoration: underline;
   }
 
   &:visited {
@@ -171,6 +225,10 @@ pre {
   background-color: var(--surface);
   border: 1px solid var(--border-default);
   border-radius: 4px;
+  display: block;
+  max-width: fit-content;
+  margin-bottom: var(--spacing-3);
+  white-space: nowrap;
 }
 
 code {
@@ -238,22 +296,57 @@ pre {
 }
 
 // Text utilities
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-tertiary { color: var(--text-tertiary); }
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
 
 // Background utilities
-.bg-primary { background-color: var(--bg-primary); }
-.bg-secondary { background-color: var(--bg-secondary); }
-.bg-surface { background-color: var(--surface); }
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-surface {
+  background-color: var(--surface);
+}
 
 // Border utilities
-.border { border: 1px solid var(--border-default); }
-.border-subtle { border: 1px solid var(--border-subtle); }
-.border-strong { border: 1px solid var(--border-strong); }
+.border {
+  border: 1px solid var(--border-default);
+}
+
+.border-subtle {
+  border: 1px solid var(--border-subtle);
+}
+
+.border-strong {
+  border: 1px solid var(--border-strong);
+}
 
 // Shadow utilities
-.shadow-sm { box-shadow: var(--shadow-sm); }
-.shadow-md { box-shadow: var(--shadow-md); }
-.shadow-lg { box-shadow: var(--shadow-lg); }
-.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}

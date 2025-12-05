@@ -1,0 +1,113 @@
+@import '../../../styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  background: oklch(from var(--surface) l c h / 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+
+  // Shimmer effect (animation de brillance)
+  :host::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        oklch(from var(--surface-hover) l c h / 0.3),
+        transparent);
+    animation: shimmer 2s infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+}
+
+.skeleton-card {
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: var(--spacing-4);
+  }
+
+  &__spinner {
+    width: 60px;
+    height: 60px;
+  }
+
+  &__spinner-svg {
+    animation: rotate 1.5s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: rotate 3s linear infinite;
+    }
+  }
+
+  &__spinner-circle {
+    stroke: var(--primary);
+    stroke-linecap: round;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: dash 3s ease-in-out infinite;
+    }
+  }
+
+  &__text {
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    margin: 0;
+  }
+}
+
+// Animation shimmer (brillance qui traverse)
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+// Animation rotation du SVG
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Animation du trait de cercle
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}

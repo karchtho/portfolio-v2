@@ -1,4 +1,4 @@
-INSERT INTO projects (name, description, url, github_url, image_url, tags, status) VALUES
+INSERT INTO projects (name, description, url, github_url, image_url, tags, status, is_featured) VALUES
 (
   'Portfolio Website',
   'A modern full-stack portfolio built with Angular and Express. Showcases projects and blog posts.',
@@ -6,7 +6,8 @@ INSERT INTO projects (name, description, url, github_url, image_url, tags, statu
   'https://github.com/karchtho/portfolio-v2',
   'https://picsum.photos/800?random=1',
   JSON_ARRAY('Angular', 'Express', 'MySQL', 'Docker'),
-  'active'
+  'active',
+  TRUE
 ),
 (
   'Videogame',
@@ -15,7 +16,8 @@ INSERT INTO projects (name, description, url, github_url, image_url, tags, statu
   'https://github.com/Yvalis-Studio/Snaposaurus',
   'https://picsum.photos/800?random=2',
   JSON_ARRAY('React', 'Node.js', 'Stripe', 'PostgreSQL'),
-  'active'
+  'active',
+  TRUE
 ),
 (
   'Task Manager App',
@@ -24,5 +26,6 @@ INSERT INTO projects (name, description, url, github_url, image_url, tags, statu
   'https://github.com/thomas/taskhub',
   'https://picsum.photos/800?random=3',
   JSON_ARRAY('Vue.js', 'Firebase', 'WebSocket'),
-  'archived'
+  'archived',
+  FALSE
 );

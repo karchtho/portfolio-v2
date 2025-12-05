@@ -20,6 +20,10 @@ export class ProjectsService {
         return this.repository.findById(id);
     }
 
+    async getFeaturedProjects(): Promise<Project[]> {
+        return this.repository.findFeatured();
+    }
+
     async createProject(input: CreateProjectInput): Promise<Project> {
         // Validation
         if(!input.name || input.name.trim().length === 0) {

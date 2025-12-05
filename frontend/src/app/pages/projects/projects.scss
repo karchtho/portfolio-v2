@@ -1,10 +1,14 @@
-.projects-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+@use '../../../styles/variables' as *;
+
+:host {
+  display: block;
+  padding: 2rem 0; // Vertical spacing only, container handles horizontal
 }
 
-.projects-header {
+// Using .container utility class applied in HTML
+// No need to duplicate max-width + margin: 0 auto
+
+.projects__header {
   text-align: center;
   margin-bottom: 3rem;
 
@@ -14,12 +18,12 @@
   }
 }
 
-.projects-subtitle {
+.projects__subtitle {
   font-size: 1.125rem;
   color: var(--text-secondary);
 }
 
-.projects-grid {
+.projects__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
@@ -37,12 +41,12 @@
 }
 
 // Responsive adjustments
-@media (max-width: 768px) {
-  .projects-header h1 {
+@media (max-width: $breakpoint-mobile) {
+  .projects__header h1 {
     font-size: 2rem;
   }
 
-  .projects-grid {
+  .projects__grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }

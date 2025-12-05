@@ -1,7 +1,7 @@
-<div class="projects-page">
-  <header class="projects-header">
+<div class="container">
+  <header class="projects__header">
     <h1>My Projects</h1>
-    <p class="projects-subtitle">A showcase of my work and experiments</p>
+    <p class="projects__subtitle">A showcase of my work and experiments</p>
   </header>
 
   @if (projectsService.loading()) {
@@ -17,7 +17,7 @@
   }
 
   @if (!projectsService.loading() && !projectsService.error()) {
-    <div class="projects-grid">
+    <div class="projects__grid">
       @for (project of projectsService.projects(); track project.id) {
         <app-project-card [project]="project" />
       }

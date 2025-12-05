@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ThemeService } from '../../services/theme.service';
@@ -8,6 +8,7 @@ import { ThemeService } from '../../services/theme.service';
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {
   // Inject theme service
@@ -18,7 +19,7 @@ export class Navbar {
 
   // Navigation items
   navItems = [
-    {label: 'Home', path: '/home'},
+    {label: 'Home', path: '/'},
     {label: 'Projects', path: '/projects'},
     {label: 'About', path: '/about'}
   ]

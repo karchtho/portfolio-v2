@@ -1,3 +1,7 @@
+:host {
+  display: block;
+}
+
 .project-card {
   background: var(--surface);
   border: 1px solid var(--border-default);
@@ -77,21 +81,3 @@
   margin-top: auto;
   padding-top: 1rem;
 }
-
-// .btn {
-//   padding: 0.625rem 1.25rem;
-//   border-radius: 6px;
-//   font-weight: 500;
-//   font-size: 0.9375rem;
-//   text-decoration: none;
-//   transition: all 0.2s ease;
-//   border: none;
-//   cursor: pointer;
-//   display: inline-block;
-//   text-align: center;
-
-//   &:focus-visible {
-//     outline: none;
-//     box-shadow: var(--focus-ring);
-//   }
-// }

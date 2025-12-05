@@ -8,6 +8,9 @@ const controller = new ProjectsController();
 // GET /api/projects - Get all projects
 router.get('/', (req, res) => controller.getAll(req, res));
 
+// GET /api/projects/featured - Get featured projects
+router.get('/featured', (req, res) => controller.getFeatured(req, res));
+
 // GET /api/projects/:id - Get a single project
 router.get('/:id', (req, res) => controller.getById(req, res));
 
