@@ -1,0 +1,219 @@
+@import '../../../styles/variables';
+
+:host {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// HERO SECTION
+// ---------------------------------------------------------------------------
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+  align-items: center;
+  padding: var(--spacing-16) var(--spacing-6);
+  max-width: 1200px;
+  margin: 0 auto;
+
+  // Desktop: two columns
+  @media (min-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-12);
+    padding: var(--spacing-20) var(--spacing-8);
+  }
+
+  &__content {
+    // Desktop: content on left
+    order: 2;
+
+    @media (min-width: $breakpoint-tablet) {
+      order: 1;
+    }
+  }
+
+  &__subtitle {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-4);
+  }
+
+
+  &__image {
+    order: 2;
+
+
+    @media (min-width: $breakpoint-tablet) {
+      order: 1;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: block;
+    margin: 0 auto;
+  }
+
+}
+
+// ---------------------------------------------------------------------------
+// FEATURED PROJECTS SECTION
+// ---------------------------------------------------------------------------
+
+.featured-projects {
+  padding: var(--spacing-16) var(--spacing-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  scroll-margin-top: var(--spacing-16);
+
+  @media (min-width: $breakpoint-tablet) {
+    padding: var(--spacing-20) var(--spacing-8);
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-8);
+    margin-bottom: var(--spacing-12);
+
+    @media (min-width: $breakpoint-tablet) {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+  }
+
+  &__loading,
+  &__error {
+    text-align: center;
+    padding: var(--spacing-12);
+    font-size: var(--font-size-3xl);
+  }
+
+
+  &__error {
+    color: var(--error, oklch(.6 .19 25));
+  }
+
+&__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-8);
+}
+
+&__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-default);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+
+  &:hover {
+    color: var(--primary);
+    background-color: oklch(from var(--primary) l c h / 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+&__view-all-arrow {
+  transition: transform var(--transition-fast);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+&__view-all:hover &__view-all-arrow {
+  transform: translateX(4px);
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+}
+}
+
+
+// ---------------------------------------------------------------------------
+// SKILLS SECTION
+// ---------------------------------------------------------------------------
+
+.skills {
+  padding: var(--spacing-16) var(--spacing-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  background: oklch(from var(--surface) l c h / 0.3);
+  border-radius: var(--radius-lg);
+
+  @media (min-width: $breakpoint-tablet) {
+    padding: var(--spacing-20) var(--spacing-8);
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+  }
+
+  &__subtitle {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    margin-top: var(--spacing-2);
+  }
+
+  &__categories {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
+
+  &__category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  &__category-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  &__category-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: oklch(from var(--primary) l c h / 0.15);
+    border-radius: var(--radius-default);
+    font-size: var(--font-size-lg);
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-2);
+  }
+}

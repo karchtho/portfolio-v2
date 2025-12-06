@@ -16,9 +16,17 @@ export class ProjectsRepository {
     return rows.length > 0 ? (rows[0] as Project) : null;
   }
 
+  async findFeatured(): Promise<Project[]> {
+    const [rows] = await pool.query<RowDataPacket[]>(
+      'SELECT * FROM projects WHERE is_featured = TRUE AND status = ? ORDER BY created_at DESC',
+      ['active'],
+    );
+    return rows as Project[];
+  }
+
   async create(input: CreateProjectInput): Promise<Project> {
     const [result] = await pool.query<ResultSetHeader>(
-      'INSERT INTO projects (name, description, url, github_url, image_url, tags, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO projects (name, description, url, github_url, image_url, tags, status, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
       [
         input.name,
         input.description,
@@ -27,6 +35,7 @@ export class ProjectsRepository {
         input.image_url || null,
         input.tags ? JSON.stringify(input.tags) : null,
         input.status || 'active',
+        input.is_featured || false,
       ],
     );
 
@@ -66,6 +75,10 @@ export class ProjectsRepository {
     if (input.status !== undefined) {
       fields.push('status = ?');
       values.push(input.status);
+    }
+    if (input.is_featured !== undefined) {
+      fields.push('is_featured = ?');
+      values.push(input.is_featured);
     }
 
     if (fields.length === 0) return this.findById(id);

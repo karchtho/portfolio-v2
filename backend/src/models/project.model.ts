@@ -6,7 +6,10 @@ export interface Project {
   github_url?: string;
   image_url?: string;
   tags?: string[];
-  status: "active" | "archived";
+  thumbnail?: string;
+  images?: string[];
+  status: 'active' | 'archived';
+  is_featured: boolean;
   created_at: Date;
   updated_at: Date;
 }
@@ -19,6 +22,7 @@ export interface CreateProjectInput {
   image_url?: string;
   tags?: string[];
   status?: 'active' | 'archived';
+  is_featured?: boolean;
 }
 
 export type UpdateProjectInput = Partial<CreateProjectInput>;

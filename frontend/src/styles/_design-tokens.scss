@@ -1,0 +1,105 @@
+// =============================================================================
+// DESIGN TOKENS - CSS Custom Properties
+// =============================================================================
+// Reusable design values for consistent styling across the application.
+// These tokens are runtime-configurable and theme-aware.
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // TYPOGRAPHY - Font sizes
+  // ---------------------------------------------------------------------------
+  // Base: 16px (browser default)
+  --font-size-xs: 0.75rem;    // 12px - Small labels, captions
+  --font-size-sm: 0.875rem;   // 14px - Secondary text, small buttons
+  --font-size-base: 1rem;     // 16px - Body text, paragraphs
+  --font-size-lg: 1.125rem;   // 18px - Subheadings, emphasis
+  --font-size-xl: 1.25rem;    // 20px - Card titles, section headers
+  --font-size-2xl: 1.5rem;    // 24px - Page subtitles (h4)
+  --font-size-3xl: 1.75rem;   // 28px - Section titles (h3)
+  --font-size-4xl: 2rem;      // 32px - Page titles (h2)
+  --font-size-5xl: 2.5rem;    // 40px - Hero titles (h1)
+
+  // Font weights
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  // Line heights
+  --line-height-tight: 1.25;   // 125% - Headings
+  --line-height-normal: 1.5;   // 150% - Body text
+  --line-height-relaxed: 1.75; // 175% - Long-form content
+
+  // ---------------------------------------------------------------------------
+  // SPACING - Padding & Margin
+  // ---------------------------------------------------------------------------
+  // Consistent spacing scale based on 0.25rem (4px) increments
+  --spacing-0: 0;              // 0px
+  --spacing-1: 0.25rem;        // 4px
+  --spacing-2: 0.5rem;         // 8px
+  --spacing-3: 0.75rem;        // 12px
+  --spacing-4: 1rem;           // 16px
+  --spacing-5: 1.25rem;        // 20px
+  --spacing-6: 1.5rem;         // 24px
+  --spacing-8: 2rem;           // 32px
+  --spacing-10: 2.5rem;        // 40px
+  --spacing-12: 3rem;          // 48px
+  --spacing-16: 4rem;          // 64px
+  --spacing-20: 5rem;          // 80px
+  --spacing-24: 6rem;          // 96px
+
+  // ---------------------------------------------------------------------------
+  // BORDER RADIUS - Rounded corners
+  // ---------------------------------------------------------------------------
+  --radius-none: 0;
+  --radius-sm: 0.25rem;        // 4px - Subtle rounding
+  --radius-default: 0.5rem;    // 8px - Cards, buttons
+  --radius-md: 0.75rem;        // 12px - Modal, large cards
+  --radius-lg: 1rem;           // 16px - Hero sections
+  --radius-xl: 1.5rem;         // 24px - Large containers
+  --radius-full: 9999px;       // Pill shape, circular buttons
+
+  // ---------------------------------------------------------------------------
+  // TRANSITIONS - Animation durations
+  // ---------------------------------------------------------------------------
+  --transition-fast: 150ms;    // Quick interactions (hover, focus)
+  --transition-base: 250ms;    // Default transitions
+  --transition-slow: 400ms;    // Smooth, noticeable animations
+  --transition-slower: 600ms;  // Drawer, modal open/close
+
+  // Easing functions
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // ---------------------------------------------------------------------------
+  // SHADOWS - Elevation system
+  // ---------------------------------------------------------------------------
+  // Already defined in _utilities.scss as .shadow-* classes
+  // But included here for programmatic use
+  --shadow-xs: 0 1px 2px oklch(from var(--color-black) l c h / 0.05);
+  --shadow-sm: 0 2px 4px oklch(from var(--color-black) l c h / 0.1);
+  --shadow-md: 0 4px 8px oklch(from var(--color-black) l c h / 0.15);
+  --shadow-lg: 0 8px 16px oklch(from var(--color-black) l c h / 0.2);
+  --shadow-xl: 0 16px 32px oklch(from var(--color-black) l c h / 0.25);
+
+  // ---------------------------------------------------------------------------
+  // Z-INDEX - Layering system
+  // ---------------------------------------------------------------------------
+  // Note: Also available as SCSS variables in _variables.scss for compile-time use
+  --z-dropdown: 100;
+  --z-sticky: 100;
+  --z-navbar: 100;
+  --z-modal: 200;
+  --z-tooltip: 300;
+
+  // ---------------------------------------------------------------------------
+  // CONTAINER - Max widths
+  // ---------------------------------------------------------------------------
+  --container-sm: 640px;       // Small content (articles, forms)
+  --container-md: 768px;       // Medium content
+  --container-lg: 1024px;      // Large content
+  --container-xl: 1200px;      // Default container (used by .container utility)
+  --container-2xl: 1400px;     // Wide layouts
+}

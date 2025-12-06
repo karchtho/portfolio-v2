@@ -1,0 +1,26 @@
+<div class="container">
+  <header class="projects__header">
+    <h1>My Projects</h1>
+    <p class="projects__subtitle">A showcase of my work and experiments</p>
+  </header>
+
+  @if (projectsService.loading()) {
+    <div class="loading">
+      <p>Loading projects...</p>
+    </div>
+  }
+
+  @if (projectsService.error()) {
+    <div class="error">
+      <p>{{ projectsService.error() }}</p>
+    </div>
+  }
+
+  @if (!projectsService.loading() && !projectsService.error()) {
+    <div class="projects__grid">
+      @for (project of projectsService.projects(); track project.id) {
+        <app-project-card [project]="project" />
+      }
+    </div>
+  }
+</div>

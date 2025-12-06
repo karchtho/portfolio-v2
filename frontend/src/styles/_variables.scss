@@ -1,0 +1,22 @@
+// =============================================================================
+// SCSS VARIABLES
+// =============================================================================
+// Global SCSS variables (not CSS custom properties)
+// For breakpoints, z-index layers, and other compile-time constants
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// BREAKPOINTS - Mobile-first approach
+// ---------------------------------------------------------------------------
+$breakpoint-mobile: 768px;   // Tablets and below
+$breakpoint-tablet: 1024px;  // Desktops and below
+$breakpoint-desktop: 1280px; // Large screens
+
+// ---------------------------------------------------------------------------
+// Z-INDEX LAYERS - Consistent stacking order
+// ---------------------------------------------------------------------------
+$z-index-dropdown: 100;
+$z-index-sticky: 100;
+$z-index-navbar: 100;
+$z-index-modal: 200;
+$z-index-tooltip: 300;
