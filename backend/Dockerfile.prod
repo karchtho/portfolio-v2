@@ -38,6 +38,10 @@ RUN addgroup -g 1001 -S nodejs && \
 # This is where uploaded project images will be stored
 RUN mkdir -p /app/uploads && chown -R nodejs:nodejs /app
 
+# Copy seed images from builder (if they exist)
+# These are initial placeholder images for development/demo
+COPY --from=builder --chown=nodejs:nodejs /app/uploads /app/uploads
+
 # Switch to non-root user (if container is compromised, attacker doesn't have root)
 USER nodejs
 
