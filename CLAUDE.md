@@ -365,6 +365,8 @@ CREATE TABLE projects (
 - ❌ Multer non installé
 - ❌ Routes upload non créées
 - ❌ Express static serving non configuré
+- Need to check URGENTLY the state of Projects model. Define end goal (check all the options, archived or not, featured or not, activley in developemnt or not, extended description for details page, photos for caroussel, maybe more ? you're the proffesionnal, let me know !)
+- Design the admin form from the "cemented" info from above reflexion.
 
 **Workflow prévu :**
 1. Admin drag & drop des images
