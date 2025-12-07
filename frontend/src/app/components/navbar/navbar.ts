@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ThemeService } from '../../services/theme.service';
@@ -16,6 +16,7 @@ export class Navbar {
   private themeService = inject(ThemeService);
 
   // Computed signal
+  isMobileMenuOpen = signal(false);
   isDark = computed(() => this.themeService.isDarkMode());
 
   // Navigation items
@@ -28,5 +29,19 @@ export class Navbar {
   // Toggle theme when slider is clicked
   onThemeToggle(): void {
     this.themeService.toggleTheme();
+  }
+
+  toggleMobileMenu(): void  {
+    this.isMobileMenuOpen.update(value => !value);
+    if (this.isMobileMenuOpen()) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen.set(false);
+    document.body.style.overflow = '';
   }
 }
