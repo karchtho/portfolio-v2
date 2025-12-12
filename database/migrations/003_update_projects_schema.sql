@@ -72,9 +72,8 @@ ALTER TABLE projects CHANGE COLUMN status_new status ENUM (
 -- STEP 5: Clean up deprecated columns
 -- ============================================================================
 -- Remove image_url (replaced by thumbnail)
--- Only drop if it exists (safety check)
 ALTER TABLE projects
-DROP COLUMN IF EXISTS image_url;
+DROP COLUMN image_url;
 
 -- Remove old description column (data already migrated)
 ALTER TABLE projects
