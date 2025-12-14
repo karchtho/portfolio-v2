@@ -1672,8 +1672,8 @@ Response: 404 Not Found
 
 ## 🚧 Implementation Status
 
-**Last Updated:** December 11, 2025 (Evening Session)
-**Current Phase:** Phase 4B Complete + Tests Written ✅
+**Last Updated:** December 14, 2025 (Morning Session)
+**Current Phase:** Phase 4C Complete — Upload System Backend ✅
 
 ### ✅ Completed
 
@@ -1725,53 +1725,79 @@ Response: 404 Not Found
   - Invalid input tests (missing fields, length constraints, duplicate tags, URL formats)
   - Update schema tests (partial updates, empty updates)
 - [x] **Bug discovered and fixed:** Update schema was applying defaults (would reset fields on empty PATCH)
-- [x] All tests passing ✅
+- [x] Repository tests written (`projects.repository.test.ts` - 16 tests)
+- [x] Middleware tests written (`validation.middleware.test.ts` - 4 tests)
+- [x] Integration tests foundation (`projects.integration.test.ts` - 1 test)
+- [x] **Total: 44 tests passing** ✅
+
+#### Phase 4C: Upload System Backend ✅ COMPLETE
+- [x] Installed Multer dependencies
+  - `multer@^1.4.5-lts.1` — Express multipart/form-data middleware
+  - `@types/multer` — TypeScript definitions
+  - `file-type` — Magic bytes verification library
+
+- [x] Created `backend/src/middleware/uploads.middleware.ts`
+  - Multer `diskStorage` configuration (UUID-based filenames)
+  - File filter (MIME type + extension validation)
+  - `verifyFileType()` — Magic bytes verification (critical security)
+  - `sanitizeFilename()` — Path traversal protection
+  - `deleteFile()` — Safe file deletion with error handling
+  - Limits: 5 MB per file, max 10 files per request
+
+- [x] Created upload middleware tests (`upload.middleware.test.ts` - 8 tests)
+  - `sanitizeFilename()` — Path traversal, special characters
+  - `deleteFile()` — File deletion, non-existent files
+  - `verifyFileType()` — Invalid file detection
+
+- [x] Created `backend/src/routes/uploads.routes.ts`
+  - `POST /api/uploads/projects` — Upload 1-10 images
+  - `DELETE /api/uploads/projects/:filename` — Secure deletion
+  - Multi-layer security validation
+  - Auto-cleanup of invalid files
+  - TODO noted: Integration tests to be written
+
+- [x] Updated `backend/src/main.ts`
+  - Imported and mounted upload routes on `/api/uploads`
+  - Static serving already configured: `/uploads` → `backend/uploads/`
+
+- [x] Security implementation
+  - Multi-layer validation (extension → MIME → magic bytes)
+  - Path traversal protection (basename + resolve + startsWith)
+  - UUID filenames (prevents collisions and prediction)
+  - File size limits enforced by Multer
 
 ### 🔄 Current Status
 
-**Backend is code-complete and tested for Phase 4B:**
-1. ❌ Migration not yet run (user needs server access) - **NEXT STEP**
-2. ✅ Validation tests written and passing (22 tests)
-3. ⚠️ Repository tests not yet written (planned next session)
-4. ⚠️ Integration tests not yet written (planned next session)
-5. ❌ Not tested with actual API calls (requires migration first)
+**Backend upload system complete and ready for testing:**
+1. ✅ Phase 4B complete — 44 tests passing (validation, repository, middleware, integration)
+2. ✅ Phase 4C complete — Upload system backend implemented with security
+3. ✅ Upload middleware tests — 8 tests passing
+4. ⏳ Manual testing pending — POST/DELETE routes need Postman/Thunder Client testing
+5. ⏳ Upload integration tests — TODO noted in code (deferred to next session)
+6. ❌ Migration 003 not yet run locally (ready but user testing in Docker env first)
 
 ### 🎯 Next Steps (In Order)
 
-#### Immediate: Run Migration & Continue Testing
-1. **Run database migration** (when server access available)
-   - Follow procedure in `database/migrations/003_migration_procedure.md`
-   - Verify schema changes
-   - Test with actual data
+#### Immediate: Manual Testing (Next Session)
+1. **Test upload endpoints with Postman/Thunder Client**
+   - POST `/api/uploads/projects` with valid images
+   - POST with invalid file types (should reject)
+   - POST with oversized files (> 5 MB, should reject)
+   - DELETE `/api/uploads/projects/:filename`
+   - DELETE with path traversal attempts (should block)
+   - Verify static serving: `GET /uploads/projects/{filename}`
 
-2. **Write tests for repository** (`projects.repository.test.ts`) — NEXT SESSION
-   - Mock database with test data
-   - Test CRUD operations
-   - Test `mapRowToProject()` transformations
-   - Test sorting logic
+2. **Write upload integration tests** (optional, see TODO in code)
+   - Use `supertest` to simulate multipart uploads
+   - Test with image buffers or fixtures
+   - Test error cases comprehensively
 
-3. **Write tests for validation middleware** (`validation.middleware.test.ts`)
-   - Test successful validation calls `next()`
-   - Test failed validation returns 400 with formatted errors
-
-4. **Integration tests** (`projects.integration.test.ts`)
-   - Test full API flow: request → validation → controller → repository
-   - Test POST /api/projects with valid/invalid data
-   - Test PATCH /api/projects/:id
-
-#### After Testing: Phase 4C - Upload System
-- [ ] Install Multer: `npm install multer @types/multer file-type`
-- [ ] Create `backend/src/middleware/upload.middleware.ts`
-- [ ] Create `backend/src/routes/upload.routes.ts`
-- [ ] Configure Express static serving: `app.use('/uploads', express.static(...))`
-- [ ] Test upload flow: POST /api/upload/projects
-- [ ] Test file deletion: DELETE /api/upload/projects/:filename
-
-#### Then: Phase 4D - Frontend Updates
-- [ ] Update `frontend/src/app/models/project.model.ts`
-- [ ] Update `ProjectsService` to handle new fields
-- [ ] Update `ProjectCard` to use `short_description`
-- [ ] Create placeholder Project Detail page with `long_description`
+#### After Manual Testing: Phase 4D - Frontend Updates
+- [ ] Update `frontend/src/app/models/project.model.ts` with new fields
+- [ ] Create `UploadService` to call `/api/uploads/projects`
+- [ ] Create `ImageUploadComponent` (drag & drop UI)
+- [ ] Update `ProjectCard` to display thumbnails from backend and use `short_description`
+- [ ] Create placeholder Project Detail page with `long_description` and image carousel
 
 ### 📝 Important Notes
 
@@ -1807,14 +1833,23 @@ User prefers TDD methodology:
 - Supertest for API integration tests
 - Mock database for unit tests
 
-**Session Summary (December 11, 2025 Evening):**
+**Session Summary (December 13, 2025 — Phase 4B Testing Complete):**
 - ✅ Backend architecture complete (models, validation, middleware, routes, repository)
 - ✅ Vitest testing framework configured
-- ✅ 22 validation tests written and passing
+- ✅ Complete test suite: 44 tests passing (validation, repository, middleware, integration)
 - ✅ Critical bug discovered and fixed (update schema defaults issue)
 - ✅ TypeScript configuration fixed (tsconfig.json include/exclude)
-- 📝 Total implementation: ~500 lines of production code + ~300 lines of test code
-- 🎯 Next: Run migration, write repository tests, then Phase 4C (upload system)
+- 📝 Total implementation: ~500 lines of production code + ~600 lines of test code
+- 🎯 Next: Phase 4C (upload system)
+
+**Session Summary (December 14, 2025 Morning — Phase 4C Upload System Complete):**
+- ✅ Multer upload system fully implemented with multi-layer security
+- ✅ Upload middleware with magic bytes verification (file-type library)
+- ✅ Upload routes: POST /api/uploads/projects, DELETE /api/uploads/projects/:filename
+- ✅ 8 middleware tests written and passing (TDD for utility functions)
+- ✅ Security: Extension + MIME + magic bytes + path traversal protection + UUID filenames
+- 📝 TODO noted: Integration tests for upload routes (deferred to next session)
+- 🎯 Next: Manual testing with Postman, then Phase 4D (frontend updates)
 
 ---
 
