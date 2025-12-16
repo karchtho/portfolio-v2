@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-import healthRouter from './routes/health.route';
+import healthRouter from './routes/health.routes';
 
 
 // Load environment variables FIRST, before any other imports

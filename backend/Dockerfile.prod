@@ -34,6 +34,9 @@ COPY --from=builder /app/dist ./dist
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001 -G nodejs
 
+# Install curl for healthcheck
+RUN apk add --no-cache curl
+
 # Create uploads directory with correct permissions
 # This is where uploaded project images will be stored
 RUN mkdir -p /app/uploads && chown -R nodejs:nodejs /app

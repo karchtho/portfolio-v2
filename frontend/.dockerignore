@@ -12,3 +12,8 @@ coverage
 !README.md
 .eslintcache
 .DS_Store
+.vite  # Vite dev cache
+*.spec.ts  # Test files
+*.test.ts
+__tests__
+__mocks__

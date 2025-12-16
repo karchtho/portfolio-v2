@@ -1354,6 +1354,42 @@ volumes:
   db-data:
 ```
 
+**⚠️ Dev/Prod Volume Parity Note (December 2025):**
+
+Currently, **dev and prod use different volume strategies**:
+- **Dev** (`docker-compose.dev.yml`): Uses bind mount `./backend/uploads:/app/uploads`
+- **Prod** (`docker-compose.prod.yml`): Uses named volume `uploads_data:/app/uploads`
+
+**Reason for keeping bind mount in dev:**
+- Admin panel and upload API are nearly ready
+- Easier to manually test image uploads in dev (direct file system access)
+- Allows seeding test images without API during development
+
+**Migration plan:**
+- Once admin panel is fully functional, switch dev to named volume for parity
+- TODO comment added in `docker-compose.dev.yml` line 32
+- Migration will require copying existing `backend/uploads/` to Docker volume
+
+**To migrate when ready:**
+```yaml
+# docker-compose.dev.yml - Change line 32 from:
+- ./backend/uploads:/app/uploads
+
+# To:
+- uploads_data:/app/uploads
+
+# And add to volumes section:
+volumes:
+  mysql_data:
+  uploads_data:  # Add this line
+```
+
+Then copy existing images:
+```bash
+docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml cp ./backend/uploads/. backend:/app/uploads/
+```
+
 ---
 
 ## API Endpoints

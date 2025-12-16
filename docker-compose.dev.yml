@@ -1,5 +1,13 @@
+networks:
+  frontend_network:
+    driver: bridge
+  backend_network:
+    driver: bridge
+
 services:
   frontend:
+    networks:
+      - frontend_network
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -17,6 +25,9 @@ services:
       - backend
 
   backend:
+    networks:
+      - frontend_network  # Can talk to frontend
+      - backend_network   # Can talk to mysql
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -29,12 +40,14 @@ services:
     volumes:
       - ./backend/src:/app/src
       - /app/node_modules
-      - ./backend/uploads:/app/uploads
+      - ./backend/uploads:/app/uploads  # TODO: Switch to named volume (uploads_data) once admin panel is ready to align with prod
     depends_on:
       mysql:
         condition: service_healthy
 
   mysql:
+    networks:
+      - backend_network  # Isolated from frontend
     image: mysql:8.0
     ports:
       - "3306:3306"
