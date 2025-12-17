@@ -71,7 +71,7 @@ const router = express.Router();
       // All files valid
       return res.status(200).json({paths});
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 );
@@ -106,7 +106,7 @@ const router = express.Router();
 
         return res.status(200).json({ message: 'File deleted successfully' });
       } catch (error) {
-        next(error);
+        return next(error);
       }
     }
   );

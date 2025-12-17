@@ -8,7 +8,7 @@ export class ProjectsRepository {
     const [rows] = await pool.query<RowDataPacket[]>(
       'SELECT * FROM projects ORDER BY display_order ASC, created_at DESC',
     );
-    return rows.map(row => this.mapRowToProject(row)) as Project[];
+    return rows.map((row) => this.mapRowToProject(row)) as Project[];
   }
 
   async findById(id: number): Promise<Project | null> {
@@ -21,7 +21,7 @@ export class ProjectsRepository {
       'SELECT * FROM projects WHERE is_featured = TRUE AND status IN (?, ?) ORDER BY display_order ASC, created_at DESC',
       ['completed', 'actively_maintained'],
     );
-    return rows.map(row => this.mapRowToProject(row)) as Project[];
+    return rows.map((row) => this.mapRowToProject(row)) as Project[];
   }
 
   async create(input: CreateProjectInput): Promise<Project> {
@@ -133,8 +133,12 @@ export class ProjectsRepository {
       github_url: row.github_url,
       case_study_url: row.case_study_url,
       thumbnail: row.thumbnail,
-      images: row.images ? JSON.parse(row.images as string) : null,
-      tags: JSON.parse(row.tags as string),
+      images: row.images
+        ? typeof row.images === 'string'
+          ? JSON.parse(row.images)
+          : row.images
+        : null,
+      tags: typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags,
       status: row.status,
       is_featured: Boolean(row.is_featured), // MySQL TINYINT(1) to boolean
       display_order: row.display_order,
