@@ -278,23 +278,36 @@ Les échanges dans Claude Code peuvent rester en français.
 
 **Phase 3.5 — Layout & Navigation : Page Home** ✅ Terminé !
 
-**État actuel (Décembre 5, 2025) :**
+**État actuel (Décembre 17, 2025) :**
+
+**Phase 4C — Backend Upload System ✅ COMPLET**
+- ✅ Multer configuré avec sécurité multi-couches (extension + MIME + magic bytes)
+- ✅ Routes upload testées : POST /api/uploads/projects, DELETE /api/uploads/projects/:filename
+- ✅ Static file serving fonctionnel : /uploads/projects/*
+- ✅ Protection path traversal validée (Express + code)
+- ✅ Tests manuels complets avec curl
+
+**Phase 4D — Frontend Model Sync ✅ COMPLET**
+- ✅ Models TypeScript synchronisés avec backend (short/long descriptions, 5-state status enum)
+- ✅ **Bug critique résolu** : Repository JSON parsing (mysql2 retourne du JSON déjà parsé)
+- ✅ ProjectCard utilise short_description
+- ✅ Featured projects s'affichent correctement
+- ✅ Enum ProjectStatus avec labels et variants pour badges
+
+**Infrastructure & Design :**
 - ✅ Layout wrapper (navbar + router-outlet + footer)
 - ✅ Routing restructuré avec lazy loading (parent/children)
-- ✅ **Navbar complète** : logo, nav links (active state), theme slider iOS-style avec SVG icons + labels
-- ✅ **Footer complet** : copyright + social links (GitHub, LinkedIn, Email) avec SVG icons
-- ✅ **Design tokens system** : typography, spacing, transitions, border-radius, shadows (tous dans `_design-tokens.scss`)
-- ✅ **BEM + SCSS nesting** : architecture propre avec `&__` partout
-- ✅ **Code refactoring** : OnPush, `:host { display: block }`, breakpoints centralisés, prefers-reduced-motion
-- ✅ **Page Home** : hero section + featured projects + Skills section + scroll anchors
-- ✅ **SkeletonCard component** : loading state avec spinner et shimmer effect
-- ✅ **SkillBadge component** : badges code-styled pour compétences techniques
+- ✅ **Navbar complète** : logo, nav links (active state), theme slider iOS-style
+- ✅ **Footer complet** : copyright + social links (GitHub, LinkedIn, Email)
+- ✅ **Design tokens system** : typography, spacing, transitions, radius, shadows
+- ✅ **Page Home** : hero section + featured projects + Skills section
+- ✅ Health check endpoint moved to /health (best practice)
 
-**Prochaines étapes :**
-1. **Backend upload API** — Multer + routes POST/DELETE + file-type validation + Express static serving
-2. **Seeds avec vraies images** — ajouter de vraies images via l'API
-3. **Contact form** — formulaire + backend endpoint
-4. **Page Project Detail** — carousel d'images, description complète
+**Prochaines étapes (PRIORITÉ) :**
+1. **Phase 5 : Admin Panel** — JWT auth + CRUD interface + upload integration (PRIORITÉ UTILISATEUR)
+2. **Phase 4 : Page Project Detail** — long_description + carousel images
+3. **Optimisations** : Résoudre warnings NgOptimizedImage (aspect ratios)
+4. **Contact form** — formulaire + backend endpoint
 5. **Mobile hamburger menu** — responsive navbar (optionnel pour v1)
 
 **Documentation :**
@@ -505,4 +518,4 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
 
-*Dernière mise à jour : 5 Décembre 2025 — Phase 3.5 terminée (Home page ✅, Skills section ✅) — Phase 4 : DB schema images ✅, upload API backend à implémenter*
+*Dernière mise à jour : 17 Décembre 2025 — Phase 4C-4D terminées (Backend upload system ✅, Frontend model sync ✅, Repository JSON parsing bug fixed ✅) — Prochaine étape : Phase 5 Admin Panel*

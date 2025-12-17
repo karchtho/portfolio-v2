@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-import healthRouter from './routes/health.route';
+import healthRouter from './routes/health.routes';
 
 
 // Load environment variables FIRST, before any other imports
@@ -19,6 +19,8 @@ import express from 'express';
 import { testConnection } from './config/database';
 // eslint-disable-next-line import/first -- Must load dotenv before other imports
 import projectRouter from './routes/projects.routes';
+  // eslint-disable-next-line import/first -- Must load dotenv before other imports
+import uploadsRouter from './routes/uploads.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,8 +33,9 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 app.use('/api/projects', projectRouter);
+app.use('/api/uploads', uploadsRouter);
 
-app.use('/api', healthRouter);
+app.use('/', healthRouter);
 
 // app.listen(PORT, () => {
 //   console.log(`Server running on http://localhost:${PORT}`);

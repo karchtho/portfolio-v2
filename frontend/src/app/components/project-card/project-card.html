@@ -5,8 +5,7 @@
       class="project-card__image"
       [ngSrc]="getImageUrl(project().thumbnail!)"
       [alt]="project().name"
-      width="400"
-      height="300"
+      fill
       priority="false"
       loading="lazy"
     />
@@ -15,7 +14,7 @@
 
   <div class="project-card__content">
     <h3 class="project-card__title">{{ project().name }}</h3>
-    <p class="project-card__description">{{ project().description }}</p>
+    <p class="project-card__description">{{ project().short_description }}</p>
 
     <div class="project-card__technologies">
       @for (tag of project().tags; track tag) {

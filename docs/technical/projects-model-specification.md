@@ -1354,6 +1354,42 @@ volumes:
   db-data:
 ```
 
+**⚠️ Dev/Prod Volume Parity Note (December 2025):**
+
+Currently, **dev and prod use different volume strategies**:
+- **Dev** (`docker-compose.dev.yml`): Uses bind mount `./backend/uploads:/app/uploads`
+- **Prod** (`docker-compose.prod.yml`): Uses named volume `uploads_data:/app/uploads`
+
+**Reason for keeping bind mount in dev:**
+- Admin panel and upload API are nearly ready
+- Easier to manually test image uploads in dev (direct file system access)
+- Allows seeding test images without API during development
+
+**Migration plan:**
+- Once admin panel is fully functional, switch dev to named volume for parity
+- TODO comment added in `docker-compose.dev.yml` line 32
+- Migration will require copying existing `backend/uploads/` to Docker volume
+
+**To migrate when ready:**
+```yaml
+# docker-compose.dev.yml - Change line 32 from:
+- ./backend/uploads:/app/uploads
+
+# To:
+- uploads_data:/app/uploads
+
+# And add to volumes section:
+volumes:
+  mysql_data:
+  uploads_data:  # Add this line
+```
+
+Then copy existing images:
+```bash
+docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml cp ./backend/uploads/. backend:/app/uploads/
+```
+
 ---
 
 ## API Endpoints
@@ -1667,6 +1703,189 @@ Response: 404 Not Found
 - [ ] Meta description field (separate from short_description)
 - [ ] Open Graph image field
 - [ ] Slug/URL-friendly name for routing
+
+---
+
+## 🚧 Implementation Status
+
+**Last Updated:** December 14, 2025 (Morning Session)
+**Current Phase:** Phase 4C Complete — Upload System Backend ✅
+
+### ✅ Completed
+
+#### Phase 4A: Database Migration (NOT YET RUN - PENDING SERVER ACCESS)
+- [x] Migration script created: `database/migrations/003_update_projects_schema.sql`
+- [x] Rollback script created: `database/migrations/003_rollback_projects_schema.sql`
+- [x] Migration procedure documented: `database/migrations/003_migration_procedure.md`
+- [ ] **PENDING:** Run migration on dev environment (user has no server access yet)
+
+#### Phase 4B: Backend Model Updates ✅ COMPLETE
+- [x] Updated `backend/src/models/project.model.ts`
+  - New interfaces: `Project`, `CreateProjectInput`, `UpdateProjectInput`, `ProjectRow`
+  - New enum: `ProjectStatus` (5 states)
+  - Removed legacy fields: `description`, `image_url`
+  - Added new fields: `short_description`, `long_description`, `case_study_url`, `display_order`
+
+- [x] Installed Zod validation library
+  - `npm install zod` in backend
+
+- [x] Created `backend/src/validation/project.validation.ts`
+  - `createProjectSchema` with all validation rules
+  - `updateProjectSchema` (partial)
+  - Modern Zod API (no deprecated methods)
+
+- [x] Created `backend/src/middleware/validation.middleware.ts`
+  - Generic `validateRequest<T>()` factory function
+  - Zod error formatting
+  - Proper TypeScript types
+
+- [x] Updated `backend/src/routes/projects.routes.ts`
+  - Added validation middleware to POST and PATCH routes
+  - Changed PUT to PATCH (REST best practice)
+  - Imported schemas and middleware
+
+- [x] Updated `backend/src/repositories/projects.repository.ts`
+  - Updated `findAll()` with new sorting: `display_order ASC, created_at DESC`
+  - Updated `findFeatured()` to filter by `status IN ('completed', 'actively_maintained')`
+  - Updated `create()` with all new fields
+  - Updated `update()` with all new fields
+  - Added `mapRowToProject()` helper (JSON parsing, type conversions)
+
+- [x] Controller remains unchanged (validation handled by middleware)
+
+#### Phase 4B Testing ✅ COMPLETE
+- [x] Vitest configured (`vitest.config.ts`)
+- [x] Test directory structure created (`src/__tests__/`)
+- [x] Validation tests written (`project.validation.test.ts` - 22 tests)
+  - Valid input tests (required fields, optional fields, defaults, trimming)
+  - Invalid input tests (missing fields, length constraints, duplicate tags, URL formats)
+  - Update schema tests (partial updates, empty updates)
+- [x] **Bug discovered and fixed:** Update schema was applying defaults (would reset fields on empty PATCH)
+- [x] Repository tests written (`projects.repository.test.ts` - 16 tests)
+- [x] Middleware tests written (`validation.middleware.test.ts` - 4 tests)
+- [x] Integration tests foundation (`projects.integration.test.ts` - 1 test)
+- [x] **Total: 44 tests passing** ✅
+
+#### Phase 4C: Upload System Backend ✅ COMPLETE
+- [x] Installed Multer dependencies
+  - `multer@^1.4.5-lts.1` — Express multipart/form-data middleware
+  - `@types/multer` — TypeScript definitions
+  - `file-type` — Magic bytes verification library
+
+- [x] Created `backend/src/middleware/uploads.middleware.ts`
+  - Multer `diskStorage` configuration (UUID-based filenames)
+  - File filter (MIME type + extension validation)
+  - `verifyFileType()` — Magic bytes verification (critical security)
+  - `sanitizeFilename()` — Path traversal protection
+  - `deleteFile()` — Safe file deletion with error handling
+  - Limits: 5 MB per file, max 10 files per request
+
+- [x] Created upload middleware tests (`upload.middleware.test.ts` - 8 tests)
+  - `sanitizeFilename()` — Path traversal, special characters
+  - `deleteFile()` — File deletion, non-existent files
+  - `verifyFileType()` — Invalid file detection
+
+- [x] Created `backend/src/routes/uploads.routes.ts`
+  - `POST /api/uploads/projects` — Upload 1-10 images
+  - `DELETE /api/uploads/projects/:filename` — Secure deletion
+  - Multi-layer security validation
+  - Auto-cleanup of invalid files
+  - TODO noted: Integration tests to be written
+
+- [x] Updated `backend/src/main.ts`
+  - Imported and mounted upload routes on `/api/uploads`
+  - Static serving already configured: `/uploads` → `backend/uploads/`
+
+- [x] Security implementation
+  - Multi-layer validation (extension → MIME → magic bytes)
+  - Path traversal protection (basename + resolve + startsWith)
+  - UUID filenames (prevents collisions and prediction)
+  - File size limits enforced by Multer
+
+### 🔄 Current Status
+
+**Backend upload system complete and ready for testing:**
+1. ✅ Phase 4B complete — 44 tests passing (validation, repository, middleware, integration)
+2. ✅ Phase 4C complete — Upload system backend implemented with security
+3. ✅ Upload middleware tests — 8 tests passing
+4. ⏳ Manual testing pending — POST/DELETE routes need Postman/Thunder Client testing
+5. ⏳ Upload integration tests — TODO noted in code (deferred to next session)
+6. ❌ Migration 003 not yet run locally (ready but user testing in Docker env first)
+
+### 🎯 Next Steps (In Order)
+
+#### Immediate: Manual Testing (Next Session)
+1. **Test upload endpoints with Postman/Thunder Client**
+   - POST `/api/uploads/projects` with valid images
+   - POST with invalid file types (should reject)
+   - POST with oversized files (> 5 MB, should reject)
+   - DELETE `/api/uploads/projects/:filename`
+   - DELETE with path traversal attempts (should block)
+   - Verify static serving: `GET /uploads/projects/{filename}`
+
+2. **Write upload integration tests** (optional, see TODO in code)
+   - Use `supertest` to simulate multipart uploads
+   - Test with image buffers or fixtures
+   - Test error cases comprehensively
+
+#### After Manual Testing: Phase 4D - Frontend Updates
+- [ ] Update `frontend/src/app/models/project.model.ts` with new fields
+- [ ] Create `UploadService` to call `/api/uploads/projects`
+- [ ] Create `ImageUploadComponent` (drag & drop UI)
+- [ ] Update `ProjectCard` to display thumbnails from backend and use `short_description`
+- [ ] Create placeholder Project Detail page with `long_description` and image carousel
+
+### 📝 Important Notes
+
+**Validation Strategy:**
+- Backend uses Zod schemas in middleware (validates before controller)
+- Frontend will use Angular Reactive Forms validators
+- Same validation rules on both sides (security + UX)
+
+**JSON Fields in MySQL:**
+- `tags` (JSON array of strings) - REQUIRED
+- `images` (JSON array of paths) - OPTIONAL
+- Repository layer handles JSON.parse/stringify automatically
+
+**Status ENUM Logic:**
+- Featured projects: only `completed` or `actively_maintained`
+- All projects page: show all except `archived` (filter toggle planned)
+- In development: shows WIP work
+
+**Sorting Logic:**
+- Primary: `display_order ASC` (manual pinning, 0 = no priority)
+- Secondary: `created_at DESC` (newest first for unpinned)
+
+### 🧪 Test-Driven Development Approach
+
+User prefers TDD methodology:
+- Write tests BEFORE or ALONGSIDE feature implementation
+- Tests document expected behavior
+- Catch regressions early
+- Build confidence in refactoring
+
+**Testing Stack (Backend):**
+- Jest or Vitest (TBD)
+- Supertest for API integration tests
+- Mock database for unit tests
+
+**Session Summary (December 13, 2025 — Phase 4B Testing Complete):**
+- ✅ Backend architecture complete (models, validation, middleware, routes, repository)
+- ✅ Vitest testing framework configured
+- ✅ Complete test suite: 44 tests passing (validation, repository, middleware, integration)
+- ✅ Critical bug discovered and fixed (update schema defaults issue)
+- ✅ TypeScript configuration fixed (tsconfig.json include/exclude)
+- 📝 Total implementation: ~500 lines of production code + ~600 lines of test code
+- 🎯 Next: Phase 4C (upload system)
+
+**Session Summary (December 14, 2025 Morning — Phase 4C Upload System Complete):**
+- ✅ Multer upload system fully implemented with multi-layer security
+- ✅ Upload middleware with magic bytes verification (file-type library)
+- ✅ Upload routes: POST /api/uploads/projects, DELETE /api/uploads/projects/:filename
+- ✅ 8 middleware tests written and passing (TDD for utility functions)
+- ✅ Security: Extension + MIME + magic bytes + path traversal protection + UUID filenames
+- 📝 TODO noted: Integration tests for upload routes (deferred to next session)
+- 🎯 Next: Manual testing with Postman, then Phase 4D (frontend updates)
 
 ---
 

@@ -11,3 +11,8 @@ coverage
 !README.md
 .eslintcache
 .DS_Store
+# backend/.dockerignore
+*.spec.ts
+*.test.ts
+tests/
+__tests__
