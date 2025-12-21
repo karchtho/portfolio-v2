@@ -106,9 +106,9 @@ portfolio/
 - [x] Docker secrets support (production-ready with secrets.ts)
 - [x] Angular runtime configuration (build once, deploy anywhere)
 - [x] Docker dev & prod environments fully functional
-- [ ] Validation des données (express-validator ou Zod)
-- [ ] Gestion d'erreurs centralisée
-- [ ] Tests unitaires des repositories et controllers
+- [x] Validation des données (Zod schemas + validateRequest middleware)
+- [ ] Gestion d'erreurs centralisée — *Deferred to v2 (see docs/backend-v2-features.md)*
+- [ ] Tests unitaires des repositories et controllers — *Deferred to v2*
 
 ### Phase 3 : Frontend Angular ✅
 - [x] Comprendre les standalone components
@@ -138,15 +138,24 @@ portfolio/
 - [x] Architecture SCSS (tokens OKLCH, themes, utilities) — *Système complet implémenté*
 - [x] **DB schema images** : colonnes `thumbnail` + `images` JSON, seeds avec placeholders
 - [x] **Volume Docker uploads** : persistance configurée dans docker-compose
-- [ ] **Backend upload API** : Multer + routes POST/DELETE + validation (À FAIRE)
+- [x] **Backend upload API** : Multer + routes POST/DELETE + validation ✅
 - [ ] Design responsive mobile-first
 - [ ] Animations de base
 
 ### Phase 5 : Admin Panel
-- [ ] Authentification JWT (login, tokens, refresh)
-- [ ] Guards Angular pour routes protégées
-- [ ] Interface CRUD admin
-- [ ] Upload d'images (Multer + stockage fichier local, voir section Images)
+**Backend ✅ COMPLET**
+- [x] Authentification JWT (login endpoint + access tokens)
+- [x] AuthGuard middleware (protect routes)
+- [x] Protected CRUD endpoints (projects + uploads)
+- [ ] Refresh tokens — *Deferred to v2*
+
+**Frontend 🚧 EN COURS**
+- [ ] AuthService Angular (login, logout, token storage)
+- [ ] AuthGuard Angular (protect admin routes)
+- [ ] HTTP Interceptor (auto-add Authorization header)
+- [ ] Login Page component
+- [ ] Interface CRUD admin (create/edit projects)
+- [ ] Admin upload interface (drag & drop images)
 
 ### Phase 6 : Déploiement OVH
 - [x] Docker Compose production optimisé — *docker-compose.prod.yml avec secrets*
@@ -276,39 +285,48 @@ Les échanges dans Claude Code peuvent rester en français.
 
 ## 🚀 Prochaine étape
 
-**Phase 3.5 — Layout & Navigation : Page Home** ✅ Terminé !
+**Phase 5 Backend — Authentication System ✅ TERMINÉ !**
 
-**État actuel (Décembre 17, 2025) :**
+**État actuel (Décembre 21, 2025) :**
 
-**Phase 4C — Backend Upload System ✅ COMPLET**
-- ✅ Multer configuré avec sécurité multi-couches (extension + MIME + magic bytes)
-- ✅ Routes upload testées : POST /api/uploads/projects, DELETE /api/uploads/projects/:filename
-- ✅ Static file serving fonctionnel : /uploads/projects/*
-- ✅ Protection path traversal validée (Express + code)
-- ✅ Tests manuels complets avec curl
+**Phase 5 Backend : Authentication ✅ COMPLET**
+- ✅ Users table migration + UsersRepository
+- ✅ Auth service (login, verifyToken, hashPassword)
+- ✅ JWT configuration (access tokens 1h, issuer/audience validation)
+- ✅ POST /api/auth/login endpoint (Zod validation)
+- ✅ AuthGuard middleware (protect routes)
+- ✅ TypeScript types (TokenPayload, Express Request extension)
+- ✅ Protected routes (projects + uploads)
+- 📝 Refresh tokens — Deferred to v2 (see docs/backend-v2-features.md)
+- 📝 Error handler middleware — Deferred to v2 (controllers have try/catch)
 
-**Phase 4D — Frontend Model Sync ✅ COMPLET**
-- ✅ Models TypeScript synchronisés avec backend (short/long descriptions, 5-state status enum)
-- ✅ **Bug critique résolu** : Repository JSON parsing (mysql2 retourne du JSON déjà parsé)
-- ✅ ProjectCard utilise short_description
-- ✅ Featured projects s'affichent correctement
-- ✅ Enum ProjectStatus avec labels et variants pour badges
+**Déploiement Production ✅ OPÉRATIONNEL**
+- ✅ **Site déployé sur https://karcherthomas.com**
+- ✅ Docker Compose prod configuré (frontend + backend + MySQL)
+- ✅ GitHub Actions CI/CD fonctionnel
+- ✅ Docker secrets configurés
+- ✅ NODE_ENV correctly set (dev + prod)
+- ✅ Healthcheck endpoints opérationnels
+- ✅ Volume uploads persistant
+- ✅ Images affichées correctement en prod
 
 **Infrastructure & Design :**
 - ✅ Layout wrapper (navbar + router-outlet + footer)
-- ✅ Routing restructuré avec lazy loading (parent/children)
-- ✅ **Navbar complète** : logo, nav links (active state), theme slider iOS-style
-- ✅ **Footer complet** : copyright + social links (GitHub, LinkedIn, Email)
-- ✅ **Design tokens system** : typography, spacing, transitions, radius, shadows
-- ✅ **Page Home** : hero section + featured projects + Skills section
-- ✅ Health check endpoint moved to /health (best practice)
+- ✅ Routing restructuré avec lazy loading
+- ✅ Navbar complète (logo, nav links, theme slider iOS-style)
+- ✅ Footer complet (copyright + social links)
+- ✅ Design tokens system complet
+- ✅ Page Home (hero + featured projects + skills)
+
+**Phase 5 Frontend : Angular Auth 🚧 PROCHAINE ÉTAPE**
+- ⏳ **À FAIRE** : AuthService Angular + Login page + AuthGuard + HTTP Interceptor
 
 **Prochaines étapes (PRIORITÉ) :**
-1. **Phase 5 : Admin Panel** — JWT auth + CRUD interface + upload integration (PRIORITÉ UTILISATEUR)
-2. **Phase 4 : Page Project Detail** — long_description + carousel images
-3. **Optimisations** : Résoudre warnings NgOptimizedImage (aspect ratios)
-4. **Contact form** — formulaire + backend endpoint
-5. **Mobile hamburger menu** — responsive navbar (optionnel pour v1)
+1. **Phase 5 Frontend : Angular Auth** — AuthService + Login page + AuthGuard + HTTP Interceptor (EN COURS)
+2. **Phase 5 Frontend : Admin CRUD** — Interface création/édition projets + upload images
+3. **Page Project Detail** — long_description + carousel images
+4. **Contact form** — formulaire + backend endpoint (optionnel v1)
+5. **Mobile hamburger menu** — responsive navbar (optionnel v1)
 
 **Documentation :**
 - Navbar : `docs/technical/style-system/navbar-implementation.md`
@@ -518,4 +536,11 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
 
-*Dernière mise à jour : 17 Décembre 2025 — Phase 4C-4D terminées (Backend upload system ✅, Frontend model sync ✅, Repository JSON parsing bug fixed ✅) — Prochaine étape : Phase 5 Admin Panel*
+
+### Gratuitous Defensive Checks
+Remove defensive code that doesn't match the codebase style:
+- Null checks on values already validated upstream
+- Type checks on typed parameters
+- Try/catch blocks in trusted codepaths
+
+*Dernière mise à jour : 21 Décembre 2025 — Phase 5 Backend Authentication ✅ COMPLET (JWT login, AuthGuard middleware, protected routes, Zod validation) — Error handler & refresh tokens deferred to v2 (see docs/backend-v2-features.md) — Prochaine étape : Phase 5 Frontend Angular Auth*
