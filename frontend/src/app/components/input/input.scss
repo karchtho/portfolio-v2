@@ -1,0 +1,40 @@
+  @use '../../../styles/variables' as *;
+
+  :host {
+    display: block;
+    width: 100%;
+  }
+
+  .input {
+    // Base styles inherited from global styles.scss (input selector)
+    // We only add component-specific BEM modifiers here
+
+    // Error state modifier
+    &--error {
+      border-color: var(--danger);
+
+      &:focus {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px oklch(from var(--danger) l c h / 0.1);
+      }
+
+      &:hover:not(:disabled) {
+        border-color: var(--danger);
+      }
+    }
+
+    // // Disabled state modifier (additional to native :disabled)
+    // &--disabled {
+    //   background: var(--surface-disabled);
+    //   color: var(--text-tertiary);
+    //   cursor: not-allowed;
+    //   opacity: 0.6;
+    //   pointer-events: none;
+    // }
+
+    // // Optional: Focused state modifier (if needed for custom styling)
+    // &--focused {
+    //   // Currently using native :focus from global styles
+    //   // Add custom styles here if needed
+    // }
+  }

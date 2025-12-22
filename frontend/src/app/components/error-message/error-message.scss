@@ -1,0 +1,28 @@
+  @use '../../../styles/mixins' as *;
+  @use '../../../styles/variables' as *;
+
+  :host {
+    display: block;
+  }
+
+  .error-message {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+
+    @include body-text;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+
+    color: var(--danger);
+
+    &__icon {
+      width: var(--size-icon-sm);
+      height: var(--size-icon-sm);
+      margin-top: 2px;
+    }
+
+    &__text {
+      word-break: break-word;
+    }
+  }

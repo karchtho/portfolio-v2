@@ -1,0 +1,81 @@
+  @use '../../../styles/mixins' as *;
+  @use '../../../styles/variables' as *;
+
+  :host {
+    display: block;
+    min-height: 100dvh;
+    background: var(--background);
+  }
+
+  .login {
+    // Centering container
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--spacing-4);
+
+    &__container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    &__card {
+      // Uses .card utility class from parent
+      // Adds login-specific padding
+      padding: var(--spacing-8);
+
+      @media (max-width: $breakpoint-mobile) {
+        padding: var(--spacing-6);
+      }
+    }
+
+    &__title {
+      @include heading; // Poppins, bold, tight line-height
+      font-size: var(--font-size-3xl); // 28px
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: var(--font-size-2xl); // 24px on mobile
+      }
+    }
+
+    &__api-error {
+      // Layout
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+
+      // Spacing
+      padding: var(--spacing-3) var(--spacing-4);
+      margin-bottom: var(--spacing-6);
+
+      // Appearance
+      background: oklch(from var(--danger) l c h / 0.1);
+      border: 1px solid var(--danger);
+      border-radius: var(--radius-default);
+
+      // Typography
+      @include body-text;
+      font-size: var(--font-size-sm);
+      color: var(--danger);
+    }
+
+    &__api-error-icon {
+      width: var(--size-icon-sm);
+      height: var(--size-icon-sm);
+      flex-shrink: 0;
+      margin-top: 2px; // Optical alignment
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-5); // 20px between fields
+    }
+
+    &__submit {
+      margin-top: var(--spacing-2); // Extra space before submit
+    }
+  }

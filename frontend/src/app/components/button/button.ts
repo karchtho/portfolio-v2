@@ -10,16 +10,17 @@ import { RouterLink } from '@angular/router';
   },
   template: `
     @if (routerLink()) {
-      <a [routerLink]="routerLink()" [class]="buttonClass()">{{ label() }}</a>
+    <a [routerLink]="routerLink()" [class]="buttonClass()">{{ label() }}</a>
     } @else if (href() !== undefined) {
-      <a
-        [href]="isLinkAvailable() ? href() : undefined"
-        [class]="buttonClass()"
-        [attr.target]="externalTarget()"
-        [attr.rel]="externalRel()"
-      >{{ label() }}</a>
+    <a
+      [href]="isLinkAvailable() ? href() : undefined"
+      [class]="buttonClass()"
+      [attr.target]="externalTarget()"
+      [attr.rel]="externalRel()"
+      >{{ label() }}</a
+    >
     } @else {
-      <button [class]="buttonClass()" [type]="type()">{{ label() }}</button>
+    <button [class]="buttonClass()" [type]="type()" [disabled]="disabled()">{{ label() }}</button>
     }
   `,
   styleUrls: ['./button.scss'],
@@ -33,6 +34,7 @@ export class Button {
   routerLink = input<string | undefined>(undefined);
   href = input<string | undefined>(undefined);
   external = input<boolean>(false);
+  disabled = input<boolean>(false);
 
   // Check if link href is available (not empty/whitespace)
   isLinkAvailable = computed(() => {
@@ -44,8 +46,8 @@ export class Button {
   buttonClass = computed(() => {
     const baseClasses = `button button--${this.variant()} button--${this.size()}`;
 
-    // Add disabled modifier if href exists but is empty
-    if (this.href() !== undefined && !this.isLinkAvailable()) {
+    // Add disabled modifier if button is disabled OR if href exists but is empty
+    if (this.disabled() || (this.href() !== undefined && !this.isLinkAvailable())) {
       return `${baseClasses} button--disabled`;
     }
 

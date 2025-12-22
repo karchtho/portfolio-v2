@@ -1,0 +1,25 @@
+<div class="form-field">
+  <label [attr.for]="id()" class="form-field__label">
+    {{ label() }}
+    @if (required()) {
+    <span class="form-field__required" aria-label="required">*</span>
+    }
+  </label>
+
+  <app-input
+    [type]="type()"
+    [value]="control().value"
+    [placeholder]="placeholder()"
+    [disabled]="control().disabled"
+    [required]="required()"
+    [autocomplete]="autocomplete()"
+    [ariaInvalid]="showError()"
+    [ariaDescribedBy]="showError() ? errorId() : ''"
+    (valueChange)="onValueChange($event)"
+    (inputBlur)="onInputBlur()"
+  />
+
+  @if (showError()) {
+  <app-error-message [id]="errorId()" [message]="errorMessage()" />
+  }
+</div>
