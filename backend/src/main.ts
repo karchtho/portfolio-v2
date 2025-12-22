@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -56,3 +57,8 @@ testConnection()
     console.error('Failed to start server due to database connection error:', error);
     process.exit(1);
   });
+
+app.use(cors({
+  origin: 'http://localhost:4200',
+  credentials: true
+}));

@@ -11,7 +11,10 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true,
+          "changeDetection": "OnPush",
+          "displayBlock": true
         }
       },
       "root": "",
@@ -30,9 +33,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles/styles.scss"
-            ]
+            "styles": ["src/styles/styles.scss"]
           },
           "configurations": {
             "production": {
