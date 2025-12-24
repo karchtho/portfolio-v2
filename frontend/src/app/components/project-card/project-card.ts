@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { Project } from '../../models/project.model';
 import { ConfigService} from '../../services/config.service';
 import { Button } from '../button/button';
+import { StatusBadge } from "../status-badge/status-badge";
 
 /**
  * ProjectCard Component
@@ -12,7 +13,7 @@ import { Button } from '../button/button';
  */
 @Component({
   selector: 'app-project-card',
-  imports: [Button, NgOptimizedImage],
+  imports: [Button, NgOptimizedImage, StatusBadge],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
