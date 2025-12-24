@@ -1,4 +1,7 @@
 <article class="project-card">
+
+  <app-status-badge [status]="project().status" />
+
   @if (project().thumbnail) {
   <div class="project-card__image-wrapper">
     <img

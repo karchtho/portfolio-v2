@@ -8,6 +8,7 @@
   @include card; // Base card styles from mixin
   padding: 0; // Override mixin padding
   overflow: hidden;
+  position: relative;
   transition:
     box-shadow var(--transition-base) var(--ease-in-out),
     transform var(--transition-base) var(--ease-in-out);
@@ -31,6 +32,13 @@
     aspect-ratio: 16 / 9; // Modern approach (no hardcoded height!)
     overflow: hidden;
     background: var(--surface-secondary);
+  }
+
+  app-status-badge {
+    position: absolute;
+    top: var(--spacing-3);
+    right: var(--spacing-3);
+    z-index: 2;
   }
 
   &__image {

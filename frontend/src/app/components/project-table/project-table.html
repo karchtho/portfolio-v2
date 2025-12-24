@@ -1,0 +1,190 @@
+  <!-- project-table.html -->
+  <div class="project-table">
+    <!-- Header -->
+    <header class="project-table__header">
+      <h1 class="project-table__title">Projects</h1>
+      <app-button
+        label="Create New Project"
+        variant="primary"
+        routerLink="/admin/create"
+      />
+    </header>
+
+
+    <!-- Empty State -->
+    @if (sortedProjects().length === 0) {
+      <div class="project-table__empty">
+        <p>No projects yet. Create your first project!</p>
+        <app-button
+          label="Create Project"
+          variant="primary"
+          routerLink="/admin/create"
+        />
+      </div>
+    }
+
+    <!-- Table -->
+    @else {
+      <div class="project-table__container">
+        <table class="project-table__table" role="grid" aria-label="Projects table">
+          <!-- Table Header -->
+          <thead class="project-table__thead">
+            <tr>
+              <!-- Name Column -->
+              <th
+                class="project-table__th project-table__th--sortable"
+                (click)="onSort('name')"
+                [attr.aria-sort]="sortColumn() === 'name' ? (sortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+              >
+                <button type="button" class="project-table__sort-button">
+                  Name
+                  @if (sortColumn() === 'name') {
+                    <span class="project-table__sort-icon" [class.project-table__sort-icon--desc]="sortDirection() === 'desc'">
+                      ▲
+                    </span>
+                  }
+                </button>
+              </th>
+
+              <!-- Status Column -->
+              <th
+                class="project-table__th project-table__th--sortable"
+                (click)="onSort('status')"
+                [attr.aria-sort]="sortColumn() === 'status' ? (sortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+              >
+                <button type="button" class="project-table__sort-button">
+                  Status
+                  @if (sortColumn() === 'status') {
+                    <span class="project-table__sort-icon" [class.project-table__sort-icon--desc]="sortDirection() === 'desc'">
+                      ▲
+                    </span>
+                  }
+                </button>
+              </th>
+
+              <!-- Featured Column -->
+              <th class="project-table__th">Featured</th>
+
+              <!-- Order Column -->
+              <th
+                class="project-table__th project-table__th--sortable"
+                (click)="onSort('display_order')"
+                [attr.aria-sort]="sortColumn() === 'display_order' ? (sortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+              >
+                <button type="button" class="project-table__sort-button">
+                  Order
+                  @if (sortColumn() === 'display_order') {
+                    <span class="project-table__sort-icon" [class.project-table__sort-icon--desc]="sortDirection() === 'desc'">
+                      ▲
+                    </span>
+                  }
+                </button>
+              </th>
+
+              <!-- Updated Column -->
+              <th
+                class="project-table__th project-table__th--sortable"
+                (click)="onSort('updated_at')"
+                [attr.aria-sort]="sortColumn() === 'updated_at' ? (sortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+              >
+                <button type="button" class="project-table__sort-button">
+                  Updated
+                  @if (sortColumn() === 'updated_at') {
+                    <span class="project-table__sort-icon" [class.project-table__sort-icon--desc]="sortDirection() === 'desc'">
+                      ▲
+                    </span>
+                  }
+                </button>
+              </th>
+
+              <!-- Actions Column -->
+              <th class="project-table__th project-table__th--actions">Actions</th>
+            </tr>
+          </thead>
+
+          <!-- Table Body -->
+          <tbody class="project-table__tbody">
+            @for (project of sortedProjects(); track project.id) {
+              <tr class="project-table__row">
+                <!-- Name Cell (with thumbnail + tags) -->
+                <td class="project-table__cell project-table__cell--name">
+                  <div class="project-table__name-wrapper">
+                    @if (project.thumbnail) {
+                      <img
+                        class="project-table__thumbnail"
+                        [src]="project.thumbnail"
+                        [alt]="project.name"
+                        loading="lazy"
+                      />
+                    }
+                    <div class="project-table__name-content">
+                      <span class="project-table__name-text">{{ project.name }}</span>
+                      @if (project.tags.length > 0) {
+                        <div class="project-table__tags">
+                          @for (tag of project.tags.slice(0, 3); track tag) {
+                            <span class="project-table__tag">{{ tag }}</span>
+                          }
+                          @if (project.tags.length > 3) {
+                            <span class="project-table__tag-more">+{{ project.tags.length - 3 }}</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Status Cell -->
+                <td class="project-table__cell project-table__cell--status">
+
+                  <app-status-badge [status]="project.status" />
+                </td>
+
+                <!-- Featured Cell -->
+                <td class="project-table__cell project-table__cell--featured">
+                  <span
+                    class="project-table__featured-icon"
+                    [class.project-table__featured-icon--active]="project.is_featured"
+                    [attr.aria-label]="project.is_featured ? 'Featured' : 'Not featured'"
+                  >
+                    {{ project.is_featured ? '✓' : '✗' }}
+                  </span>
+                </td>
+
+                <!-- Order Cell -->
+                <td class="project-table__cell project-table__cell--order">
+                  {{ project.display_order }}
+                </td>
+
+                <!-- Updated Cell -->
+                <td class="project-table__cell project-table__cell--date">
+                  <time [attr.datetime]="project.updated_at">
+                    {{ getRelativeDate(project.updated_at) }}
+                  </time>
+                </td>
+
+                <!-- Actions Cell -->
+                <td class="project-table__cell project-table__cell--actions">
+                  <div class="project-table__actions">
+                    <app-button
+                      label="Edit"
+                      variant="secondary"
+                      size="small"
+                      (click)="onEdit(project)"
+                      [attr.aria-label]="'Edit ' + project.name"
+                    />
+                    <app-button
+                      label="Delete"
+                      variant="ghost"
+                      size="small"
+                      (click)="onDelete(project)"
+                      [attr.aria-label]="'Delete ' + project.name"
+                    />
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
