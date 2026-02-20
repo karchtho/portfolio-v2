@@ -137,7 +137,7 @@ jobs:
             exit 1
           fi
 
-          API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://karcherthomas.com/api/health)
+          API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://karcherthomas.com/health)
           if [ "$API_STATUS" -eq 200 ]; then
             echo "API is healthy (HTTP $API_STATUS)"
           else
