@@ -1,26 +1,22 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "rootDir": "./",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
     "outDir": "./dist",
-    "lib": ["ES2020"],
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "exactOptionalPropertyTypes": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
-  },
-  "include": ["./src/**/*", "vitest.*"],
-  "exclude": ["node_modules", "dist"],
-  "files": ["./src/types/express.d.ts"]
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true
+  }
 }

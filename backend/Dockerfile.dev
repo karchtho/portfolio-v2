@@ -2,15 +2,15 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy TypeScript config (needed for ts-node)
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.build.json nest-cli.json ./
+COPY prisma ./prisma
 
-# Source code is mounted via volume for hot-reload
+# Generate Prisma client
+RUN npx prisma generate
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:dev"]

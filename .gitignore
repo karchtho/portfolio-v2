@@ -36,6 +36,7 @@ Thumbs.db
 # Backend specific
 backend/node_modules/
 backend/dist/
+backend/src/generated/
 
 # Frontend specific
 frontend/node_modules/

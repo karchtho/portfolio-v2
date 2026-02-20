@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+enum ProjectStatus {
+  in_development
+  completed
+  actively_maintained
+  deprecated
+  archived
+}
+
+model Project {
+  id               Int           @id @default(autoincrement())
+  name             String        @db.VarChar(255)
+  shortDescription String        @map("short_description") @db.VarChar(500)
+  longDescription  String        @map("long_description") @db.Text
+  url              String?       @db.VarChar(500)
+  githubUrl        String?       @map("github_url") @db.VarChar(500)
+  caseStudyUrl     String?       @map("case_study_url") @db.VarChar(500)
+  thumbnail        String?       @db.VarChar(500)
+  images           Json?         @default("[]")
+  tags             Json
+  status           ProjectStatus @default(in_development)
+  isFeatured       Boolean       @default(false) @map("is_featured")
+  displayOrder     Int           @default(0) @map("display_order")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  @@index([status], name: "idx_status")
+  @@index([isFeatured], name: "idx_featured")
+  @@index([displayOrder], name: "idx_display_order")
+  @@index([createdAt], name: "idx_created_at")
+  @@map("projects")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique @db.VarChar(50)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
