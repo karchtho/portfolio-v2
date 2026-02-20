@@ -41,7 +41,7 @@ function toApiFormat(project: Project) {
   };
 }
 
-@Controller('api/projects')
+@Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
