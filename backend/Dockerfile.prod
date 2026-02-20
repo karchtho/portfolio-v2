@@ -1,20 +1,17 @@
 # ============================================
-# STAGE 1: Build TypeScript Application
+# STAGE 1: Build NestJS Application
 # ============================================
 FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-# Install ALL dependencies (including devDependencies needed for TypeScript compilation)
 COPY package*.json ./
 RUN npm ci
 
-# Copy source code
 COPY . .
 
-# Compile TypeScript to JavaScript
-# This creates compiled .js files in dist/
-RUN npm run build
+# Generate Prisma client (outputs to src/generated/prisma/) + build NestJS
+RUN npx prisma generate && npm run build
 
 # ============================================
 # STAGE 2: Production Runtime
@@ -23,12 +20,19 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-# Install ONLY production dependencies (no TypeScript, no dev tools)
+# Install ONLY production dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
-# Copy compiled JavaScript from builder stage (NOT source .ts files)
+# Copy Prisma schema + config (needed for prisma migrate deploy)
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
+
+# Copy compiled NestJS app (includes generated prisma client in dist/)
 COPY --from=builder /app/dist ./dist
+
+# Copy generated Prisma client (runtime needs it from src/generated/)
+COPY --from=builder /app/src/generated ./src/generated
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -38,23 +42,18 @@ RUN addgroup -g 1001 -S nodejs && \
 RUN apk add --no-cache curl
 
 # Create uploads directory with correct permissions
-# This is where uploaded project images will be stored
-RUN mkdir -p /app/uploads && chown -R nodejs:nodejs /app
+RUN mkdir -p /app/uploads/projects && chown -R nodejs:nodejs /app
 
 # Copy seed images from builder (if they exist)
-# These are initial placeholder images for development/demo
 COPY --from=builder --chown=nodejs:nodejs /app/uploads /app/uploads
 
-# Switch to non-root user (if container is compromised, attacker doesn't have root)
 USER nodejs
 
 EXPOSE 3000
 
-# Run node directly (faster than npm run start)
-CMD ["node", "dist/src/main.js"]
+# Run Prisma migrations then start the app
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
 
-# Metadata for image identification
 LABEL maintainer="Thomas kitadevturtle@gmail.com"
 LABEL environment="production"
-LABEL version="1.0.0"
-LABEL description="Portfolio backend API"
+LABEL description="Portfolio backend API — NestJS + Prisma"

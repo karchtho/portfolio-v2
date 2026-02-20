@@ -26,8 +26,8 @@ services:
 
   backend:
     networks:
-      - frontend_network  # Can talk to frontend
-      - backend_network   # Can talk to mysql
+      - frontend_network
+      - backend_network
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -37,36 +37,34 @@ services:
       - ./backend/.env
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=postgresql://portfolio_user:SecurePassword123!@postgres:5432/portfolio_db
     volumes:
       - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
       - /app/node_modules
-      - ./backend/uploads:/app/uploads  # TODO: Switch to named volume (uploads_data) once admin panel is ready to align with prod
+      - ./backend/uploads:/app/uploads
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
 
-  mysql:
+  postgres:
+    image: postgres:17-alpine
     networks:
-      - backend_network  # Isolated from frontend
-    image: mysql:8.0
+      - backend_network
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: RootSecurePassword456!
-      MYSQL_DATABASE: portfolio_db
-      MYSQL_USER: portfolio_user
-      MYSQL_PASSWORD: SecurePassword123!
-      TZ: 'UTC'
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD: SecurePassword123!
+      POSTGRES_DB: portfolio_db
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./database/migrations:/docker-entrypoint-initdb.d
-      - ./docker/healthcheck.sh:/usr/local/bin/healthcheck.sh
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "bash", "/usr/local/bin/healthcheck.sh"]
+      test: ["CMD-SHELL", "pg_isready -U portfolio_user -d portfolio_db"]
       interval: 3s
       timeout: 5s
       retries: 30
-      start_period: 60s
+      start_period: 30s
 
 volumes:
-  mysql_data:
+  postgres_data:
