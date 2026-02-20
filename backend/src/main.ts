@@ -22,6 +22,11 @@ async function bootstrap() {
     prefix: '/uploads',
   });
 
+  // Global API prefix — health excluded (used by Docker healthcheck at /health)
+  app.setGlobalPrefix('api', {
+    exclude: ['health'],
+  });
+
   // CORS
   app.enableCors();
 
