@@ -18,7 +18,7 @@ import { UploadsService } from './uploads.service';
 
 const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
 
-@Controller('api/upload')
+@Controller('upload')
 export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
