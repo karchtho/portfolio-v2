@@ -7,7 +7,7 @@ const simpleImportSort = require('eslint-plugin-simple-import-sort');
 module.exports = tseslint.config(
   // Ignore patterns
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '**/*.d.ts'],
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'src/generated/**', '**/*.d.ts'],
   },
 
   // Base config for TypeScript files
@@ -52,6 +52,9 @@ module.exports = tseslint.config(
       ],
       'prefer-const': 'error',
       'no-var': 'error',
+
+      // NestJS modules/guards are empty classes with decorators — this is expected
+      '@typescript-eslint/no-extraneous-class': 'off',
 
       // Imports
       'simple-import-sort/imports': [

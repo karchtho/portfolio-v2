@@ -9,9 +9,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Project } from '../generated/prisma/client';
 
 import { JwtAuthGuard } from '../auth/auth.guard';
+import { Project } from '../generated/prisma/client';
+
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectsService } from './projects.service';

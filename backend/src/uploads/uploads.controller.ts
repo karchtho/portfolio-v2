@@ -13,6 +13,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 
 import { JwtAuthGuard } from '../auth/auth.guard';
+
 import { UploadsService } from './uploads.service';
 
 const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
